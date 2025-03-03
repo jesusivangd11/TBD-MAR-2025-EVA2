@@ -1,0 +1,240 @@
+EVA2_1_FOREIGN KEY
+
+MySQL Shell 8.0.35
+
+Copyright (c) 2016, 2023, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > \connect --mc root@localhost
+Creating a Classic session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 8
+Server version: 8.0.35 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > create database t2;
+Query OK, 1 row affected (0.0114 sec)
+ MySQL  localhost:3306 ssl  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| t2                 |
+| tarjetas           |
+| tbd_eva_1          |
+| world              |
++--------------------+
+9 rows in set (0.0056 sec)
+ MySQL  localhost:3306 ssl  SQL > create table banco(
+                               -> BancoID int not null key auto_increment,
+                               -> Nombre vacrchar(50), not null));
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'vacrchar(50), not null))' at line 3
+ MySQL  localhost:3306 ssl  SQL > create table banco( BancoID int not null key auto_increment, Nombre varchar(50), not null));
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'not null))' at line 1
+ MySQL  localhost:3306 ssl  SQL > create table banco( BancoID int not null key auto_increment, Nombre varchar(50), not null);
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'not null)' at line 1
+ MySQL  localhost:3306 ssl  SQL > use t2;
+Default schema set to `t2`.
+Fetching global names, object names from `t2` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  t2  SQL > create table banco( BancoID int not null key auto_increment, Nombre varchar(50), not null);
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'not null)' at line 1
+ MySQL  localhost:3306 ssl  t2  SQL > create table banco( BancoID int not null key auto_increment, Nombre varchar(50), not null));
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'not null))' at line 1
+ MySQL  localhost:3306 ssl  t2  SQL > create table banco(
+                                   -> BancoID int not null key auto_increment,
+                                   -> Nombre varchar(50) not null);
+Query OK, 0 rows affected (0.0365 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into banco(Nombre)
+                                   -> values("City"), ("Scotiabank"), ("HSBC"), ("Santander");
+Query OK, 4 rows affected (0.0160 sec)
+
+Records: 4  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  t2  SQL > select * from banco;
++---------+------------+
+| BancoID | Nombre     |
++---------+------------+
+|       1 | City       |
+|       2 | Scotiabank |
+|       3 | HSBC       |
+|       4 | Santander  |
++---------+------------+
+4 rows in set (0.0005 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > create table tarjeta(
+                                   -> TarjetaID int not null key auto_increment,
+                                   -> Nombre varchar(50));
+Query OK, 0 rows affected (0.0485 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into tarjeta(Nombre)
+                                   -> values("Mastercard"), ("Visa");
+Query OK, 2 rows affected (0.0051 sec)
+
+Records: 2  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  t2  SQL > select * from tarjeta;
++-----------+------------+
+| TarjetaID | Nombre     |
++-----------+------------+
+|         1 | Mastercard |
+|         2 | Visa       |
++-----------+------------+
+2 rows in set (0.0005 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > create table cliente(
+                                   -> ClienteID int not null key auto_increment,
+                                   -> Nombre varchar(50) not null,
+                                   -> Apellidos varchar(50) not null);
+Query OK, 0 rows affected (0.0359 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into cliente (Nombre, Apellidos)
+                                   -> values("Juan", "Pérez"), ("Pedro", "Páramo"), ("Rubén", "Hernández"), ("Otro", "Cliente");
+Query OK, 4 rows affected (0.0323 sec)
+
+Records: 4  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  t2  SQL > select * from cliente;
++-----------+--------+-----------+
+| ClienteID | Nombre | Apellidos |
++-----------+--------+-----------+
+|         1 | Juan   | Pérez     |
+|         2 | Pedro  | Páramo    |
+|         3 | Rubén  | Hernández |
+|         4 | Otro   | Cliente   |
++-----------+--------+-----------+
+4 rows in set (0.0005 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > show tables;
++--------------+
+| Tables_in_t2 |
++--------------+
+| banco        |
+| cliente      |
+| tarjeta      |
++--------------+
+3 rows in set (0.0330 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > create table tarjetaCliente(
+                                   -> TarjetaclID int not null key auto_increment,
+                                   -> ClienteID int not null,
+                                   -> BancoID int not null,
+                                   -> TarjetaID int not null);
+Query OK, 0 rows affected (0.0472 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > desc tarjetaCliente;
++-------------+------+------+-----+---------+----------------+
+| Field       | Type | Null | Key | Default | Extra          |
++-------------+------+------+-----+---------+----------------+
+| TarjetaclID | int  | NO   | PRI | NULL    | auto_increment |
+| ClienteID   | int  | NO   |     | NULL    |                |
+| BancoID     | int  | NO   |     | NULL    |                |
+| TarjetaID   | int  | NO   |     | NULL    |                |
++-------------+------+------+-----+---------+----------------+
+4 rows in set (0.0081 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into tarjetaCliente(ClienteID, BancoID, TarjetaID)
+                                   -> values(1,1,1), (2,2,2), (4,3,2);
+Query OK, 3 rows affected (0.0098 sec)
+
+Records: 3  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  t2  SQL > select * from tarjetacliente;
++-------------+-----------+---------+-----------+
+| TarjetaclID | ClienteID | BancoID | TarjetaID |
++-------------+-----------+---------+-----------+
+|           1 |         1 |       1 |         1 |
+|           2 |         2 |       2 |         2 |
+|           3 |         4 |       3 |         2 |
++-------------+-----------+---------+-----------+
+3 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into tarjetaCliente(ClienteID, BancoID, TarjetaID) values(5,10,11);
+Query OK, 1 row affected (0.0297 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from cliente
+                                   -> ^C
+ MySQL  localhost:3306 ssl  t2  SQL > select * from cliente
+                                   -> where ClienteID=1
+                                   -> ;
++-----------+--------+-----------+
+| ClienteID | Nombre | Apellidos |
++-----------+--------+-----------+
+|         1 | Juan   | Pérez     |
++-----------+--------+-----------+
+1 row in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from cliente where ClienteID=2 ;
++-----------+--------+-----------+
+| ClienteID | Nombre | Apellidos |
++-----------+--------+-----------+
+|         2 | Pedro  | Páramo    |
++-----------+--------+-----------+
+1 row in set (0.0005 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from cliente where ClienteID=3 ;
++-----------+--------+-----------+
+| ClienteID | Nombre | Apellidos |
++-----------+--------+-----------+
+|         3 | Rubén  | Hernández |
++-----------+--------+-----------+
+1 row in set (0.0005 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from tarjetacliente;
++-------------+-----------+---------+-----------+
+| TarjetaclID | ClienteID | BancoID | TarjetaID |
++-------------+-----------+---------+-----------+
+|           1 |         1 |       1 |         1 |
+|           2 |         2 |       2 |         2 |
+|           3 |         4 |       3 |         2 |
+|           4 |         5 |      10 |        11 |
++-------------+-----------+---------+-----------+
+4 rows in set (0.0005 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from cliente where ClienteID=5 ;
+Empty set (0.0045 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > delete from tarjetacliente where
+                                   -> tarjetaclID=4;
+Query OK, 1 row affected (0.0328 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from tarjetacliente;
++-------------+-----------+---------+-----------+
+| TarjetaclID | ClienteID | BancoID | TarjetaID |
++-------------+-----------+---------+-----------+
+|           1 |         1 |       1 |         1 |
+|           2 |         2 |       2 |         2 |
+|           3 |         4 |       3 |         2 |
++-------------+-----------+---------+-----------+
+3 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > desc tarjetacliente;
++-------------+------+------+-----+---------+----------------+
+| Field       | Type | Null | Key | Default | Extra          |
++-------------+------+------+-----+---------+----------------+
+| TarjetaclID | int  | NO   | PRI | NULL    | auto_increment |
+| ClienteID   | int  | NO   |     | NULL    |                |
+| BancoID     | int  | NO   |     | NULL    |                |
+| TarjetaID   | int  | NO   |     | NULL    |                |
++-------------+------+------+-----+---------+----------------+
+4 rows in set (0.0014 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > drop table tarjetacliente;
+Query OK, 0 rows affected (0.0453 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > create table tarjetaCliente( TarjetaclID int not null key auto_increment, ClienteID int not null, BancoID int not null, TarjetaID int not null);
+Query OK, 0 rows affected (0.0292 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > drop table tarjetacliente;
+Query OK, 0 rows affected (0.0420 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > create table tarjetaCliente( TarjetaclID int not null key auto_increment, ClienteID int not null, BancoID int not null, TarjetaID int not null, foreing key (ClienteID) references Cliente(ClienteID);
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'key (ClienteID) references Cliente(ClienteID)' at line 1
+ MySQL  localhost:3306 ssl  t2  SQL > create table tarjetaCliente( TarjetaclID int not null key auto_increment, ClienteID int not null, BancoID int not null, TarjetaID int not null, foreign key (ClienteID) references Cliente(ClienteID);
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+ MySQL  localhost:3306 ssl  t2  SQL > create table tarjetaCliente( TarjetaclID int not null key auto_increment, ClienteID int not null, BancoID int not null, TarjetaID int not null, foreign key (ClienteID) references Cliente(ClienteID);
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+ MySQL  localhost:3306 ssl  t2  SQL > create table tarjetaCliente( TarjetaclID int not null key auto_increment, ClienteID int not null, BancoID int not null, TarjetaID int not null, foreign key (ClienteID) references Cliente(ClienteID));
+Query OK, 0 rows affected (0.0513 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > show create table tarjetacliente;
++----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table          | Create Table
+
+
+                                               |
++----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| tarjetacliente | CREATE TABLE `tarjetacliente` (
+  `TarjetaclID` int NOT NULL AUTO_INCREMENT,
+  `ClienteID` int NOT NULL,
+  `BancoID` int NOT NULL,
+  `TarjetaID` int NOT NULL,
+  PRIMARY KEY (`TarjetaclID`),
+  KEY `ClienteID` (`ClienteID`),
+  CONSTRAINT `tarjetacliente_ibfk_1` FOREIGN KEY (`ClienteID`) REFERENCES `cliente` (`ClienteID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0274 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into tarjetaCliente(ClienteID, BancoID, TarjetaID) values(5,10,11);
+ERROR: 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`t2`.`tarjetacliente`, CONSTRAINT `tarjetacliente_ibfk_1` FOREIGN KEY (`ClienteID`) REFERENCES `cliente` (`ClienteID`))
+ MySQL  localhost:3306 ssl  t2  SQL >
