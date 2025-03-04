@@ -1,0 +1,287 @@
+EVA2_2_FOREIGN KEY2
+
+MySQL Shell 8.0.35
+
+Copyright (c) 2016, 2023, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > \c --mc root@localhost
+Creating a Classic session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 8
+Server version: 8.0.35 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > use t2;
+Default schema set to `t2`.
+Fetching global names, object names from `t2` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  t2  SQL > show tables;
++----------------+
+| Tables_in_t2   |
++----------------+
+| banco          |
+| cliente        |
+| tarjeta        |
+| tarjetacliente |
++----------------+
+4 rows in set (0.0068 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > desc tarjetacliente;
++-------------+------+------+-----+---------+----------------+
+| Field       | Type | Null | Key | Default | Extra          |
++-------------+------+------+-----+---------+----------------+
+| TarjetaclID | int  | NO   | PRI | NULL    | auto_increment |
+| ClienteID   | int  | NO   | MUL | NULL    |                |
+| BancoID     | int  | NO   |     | NULL    |                |
+| TarjetaID   | int  | NO   |     | NULL    |                |
++-------------+------+------+-----+---------+----------------+
+4 rows in set (0.0074 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into tarjetacliente(ClienteID, BancoID, TarjetaID)
+                                   -> values(10,1,1);
+ERROR: 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`t2`.`tarjetacliente`, CONSTRAINT `tarjetacliente_ibfk_1` FOREIGN KEY (`ClienteID`) REFERENCES `cliente` (`ClienteID`))
+ MySQL  localhost:3306 ssl  t2  SQL > select * from tarjetacliente;
+Empty set (0.0006 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into tarjetacliente(ClienteID, BancoID, TarjetaID) values(1,1,1);
+Query OK, 1 row affected (0.0141 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from cliente;
++-----------+--------+-----------+
+| ClienteID | Nombre | Apellidos |
++-----------+--------+-----------+
+|         1 | Juan   | Pérez     |
+|         2 | Pedro  | Páramo    |
+|         3 | Rubén  | Hernández |
+|         4 | Otro   | Cliente   |
++-----------+--------+-----------+
+4 rows in set (0.0011 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from banco
+                                   -> ;
++---------+------------+
+| BancoID | Nombre     |
++---------+------------+
+|       1 | City       |
+|       2 | Scotiabank |
+|       3 | HSBC       |
+|       4 | Santander  |
++---------+------------+
+4 rows in set (0.0394 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from tarjeta;
++-----------+------------+
+| TarjetaID | Nombre     |
++-----------+------------+
+|         1 | Mastercard |
+|         2 | Visa       |
++-----------+------------+
+2 rows in set (0.0165 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into tarjetacliente(ClienteID, BancoID, TarjetaID) values(2,2,2);
+Query OK, 1 row affected (0.0086 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from tarjetacliente;
++-------------+-----------+---------+-----------+
+| TarjetaclID | ClienteID | BancoID | TarjetaID |
++-------------+-----------+---------+-----------+
+|           3 |         1 |       1 |         1 |
+|           4 |         2 |       2 |         2 |
++-------------+-----------+---------+-----------+
+2 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > delete from cliente
+                                   -> where clienteid=1;
+ERROR: 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`t2`.`tarjetacliente`, CONSTRAINT `tarjetacliente_ibfk_1` FOREIGN KEY (`ClienteID`) REFERENCES `cliente` (`ClienteID`))
+ MySQL  localhost:3306 ssl  t2  SQL > alter table cliente
+                                   -> add foreign key(bancoID) references^C
+ MySQL  localhost:3306 ssl  t2  SQL > alter table tarjetacliente
+                                   -> add foreign key(BancoID) references BancoID(BancoID);
+ERROR: 1824 (HY000): Failed to open the referenced table 'bancoid'
+ MySQL  localhost:3306 ssl  t2  SQL > alter table tarjetacliente add foreign key(BancoID) references Banco(BancoID);
+Query OK, 2 rows affected (0.1299 sec)
+
+Records: 2  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  t2  SQL > show create table tarjetacliente;
++----------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table          | Create Table
+
+
+
+                                                                  |
++----------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| tarjetacliente | CREATE TABLE `tarjetacliente` (
+  `TarjetaclID` int NOT NULL AUTO_INCREMENT,
+  `ClienteID` int NOT NULL,
+  `BancoID` int NOT NULL,
+  `TarjetaID` int NOT NULL,
+  PRIMARY KEY (`TarjetaclID`),
+  KEY `ClienteID` (`ClienteID`),
+  KEY `BancoID` (`BancoID`),
+  CONSTRAINT `tarjetacliente_ibfk_1` FOREIGN KEY (`ClienteID`) REFERENCES `cliente` (`ClienteID`),
+  CONSTRAINT `tarjetacliente_ibfk_2` FOREIGN KEY (`BancoID`) REFERENCES `banco` (`BancoID`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++----------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0048 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from banco;
++---------+------------+
+| BancoID | Nombre     |
++---------+------------+
+|       1 | City       |
+|       2 | Scotiabank |
+|       3 | HSBC       |
+|       4 | Santander  |
++---------+------------+
+4 rows in set (0.0014 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into tarjetacliente(ClienteID, BancoID, TarjetaID) values(2,5,2);
+ERROR: 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`t2`.`tarjetacliente`, CONSTRAINT `tarjetacliente_ibfk_2` FOREIGN KEY (`BancoID`) REFERENCES `banco` (`BancoID`))
+ MySQL  localhost:3306 ssl  t2  SQL > insert into tarjetacliente(ClienteID, BancoID, TarjetaID) values(2,3,2);
+Query OK, 1 row affected (0.0092 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into tarjetacliente(ClienteID, BancoID, TarjetaID) values(2,4,2);
+Query OK, 1 row affected (0.0090 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > alter table tarjetacliente add foreign key(TarjetaclID) references Tarjeta(tarjetaID);
+ERROR: 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`t2`.`#sql-1ea8_8`, CONSTRAINT `tarjetacliente_ibfk_3` FOREIGN KEY (`TarjetaclID`) REFERENCES `tarjeta` (`TarjetaID`))
+ MySQL  localhost:3306 ssl  t2  SQL > alter table tarjetacliente add foreign key(TarjetaID) references Tarjeta(tarjetaID);
+Query OK, 4 rows affected (0.0779 sec)
+
+Records: 4  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  t2  SQL > show create table tarjetacliente;
++----------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table          | Create Table
+
+
+
+
+                                                                              |
++----------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| tarjetacliente | CREATE TABLE `tarjetacliente` (
+  `TarjetaclID` int NOT NULL AUTO_INCREMENT,
+  `ClienteID` int NOT NULL,
+  `BancoID` int NOT NULL,
+  `TarjetaID` int NOT NULL,
+  PRIMARY KEY (`TarjetaclID`),
+  KEY `ClienteID` (`ClienteID`),
+  KEY `BancoID` (`BancoID`),
+  KEY `TarjetaID` (`TarjetaID`),
+  CONSTRAINT `tarjetacliente_ibfk_1` FOREIGN KEY (`ClienteID`) REFERENCES `cliente` (`ClienteID`),
+  CONSTRAINT `tarjetacliente_ibfk_2` FOREIGN KEY (`BancoID`) REFERENCES `banco` (`BancoID`),
+  CONSTRAINT `tarjetacliente_ibfk_3` FOREIGN KEY (`TarjetaID`) REFERENCES `tarjeta` (`TarjetaID`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++----------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into tarjetacliente(ClienteID, BancoID, TarjetaID) values(2,4,3);
+ERROR: 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`t2`.`tarjetacliente`, CONSTRAINT `tarjetacliente_ibfk_3` FOREIGN KEY (`TarjetaID`) REFERENCES `tarjeta` (`TarjetaID`))
+ MySQL  localhost:3306 ssl  t2  SQL > delete from tarjeta
+                                   -> where tarjetaid=2;
+ERROR: 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`t2`.`tarjetacliente`, CONSTRAINT `tarjetacliente_ibfk_3` FOREIGN KEY (`TarjetaID`) REFERENCES `tarjeta` (`TarjetaID`))
+ MySQL  localhost:3306 ssl  t2  SQL > show tables;
++----------------+
+| Tables_in_t2   |
++----------------+
+| banco          |
+| cliente        |
+| tarjeta        |
+| tarjetacliente |
++----------------+
+4 rows in set (0.0016 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > create table direccioncliente(
+                                   -> Calle varchar(60) not null,
+                                   -> Número int not null,
+                                   -> Colonia varchar(50) not null,
+                                   -> CP int not null,
+                                   -> Ciudad varchar(50) not null
+                                   -> ,
+                                   -> Estado varchar(50) not null,
+                                   -> País varchar (30) not null);
+Query OK, 0 rows affected (0.0512 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > desc direccioncliente;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| Calle   | varchar(60) | NO   |     | NULL    |       |
+| Número  | int         | NO   |     | NULL    |       |
+| Colonia | varchar(50) | NO   |     | NULL    |       |
+| CP      | int         | NO   |     | NULL    |       |
+| Ciudad  | varchar(50) | NO   |     | NULL    |       |
+| Estado  | varchar(50) | NO   |     | NULL    |       |
+| País    | varchar(30) | NO   |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+7 rows in set (0.0021 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > alter table direccioncliente add ClienteID;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+ MySQL  localhost:3306 ssl  t2  SQL > alter table direccioncliente add ClienteID int not null first;
+Query OK, 0 rows affected (0.0468 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  t2  SQL > desc direccioncliente;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| ClienteID | int         | NO   |     | NULL    |       |
+| Calle     | varchar(60) | NO   |     | NULL    |       |
+| Número    | int         | NO   |     | NULL    |       |
+| Colonia   | varchar(50) | NO   |     | NULL    |       |
+| CP        | int         | NO   |     | NULL    |       |
+| Ciudad    | varchar(50) | NO   |     | NULL    |       |
+| Estado    | varchar(50) | NO   |     | NULL    |       |
+| País      | varchar(30) | NO   |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+8 rows in set (0.0015 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > alter table direccioncliente change ClienteID to DireccionclID int not null auto_increment first;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'to DireccionclID int not null auto_increment first' at line 1
+ MySQL  localhost:3306 ssl  t2  SQL > alter table direccioncliente change ClienteID DireccionclID int not null auto_increment first;
+ERROR: 1075 (42000): Incorrect table definition; there can be only one auto column and it must be defined as a key
+ MySQL  localhost:3306 ssl  t2  SQL > alter table direccioncliente change ClienteID DireccionclID int not null key auto_increment first;
+Query OK, 0 rows affected (0.0546 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  t2  SQL > desc direccioncliente;
++---------------+-------------+------+-----+---------+----------------+
+| Field         | Type        | Null | Key | Default | Extra          |
++---------------+-------------+------+-----+---------+----------------+
+| DireccionclID | int         | NO   | PRI | NULL    | auto_increment |
+| Calle         | varchar(60) | NO   |     | NULL    |                |
+| Número        | int         | NO   |     | NULL    |                |
+| Colonia       | varchar(50) | NO   |     | NULL    |                |
+| CP            | int         | NO   |     | NULL    |                |
+| Ciudad        | varchar(50) | NO   |     | NULL    |                |
+| Estado        | varchar(50) | NO   |     | NULL    |                |
+| País          | varchar(30) | NO   |     | NULL    |                |
++---------------+-------------+------+-----+---------+----------------+
+8 rows in set (0.0016 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > show create table direccioncliente;
++------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table            | Create Table
+
+
+                                        |
++------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| direccioncliente | CREATE TABLE `direccioncliente` (
+  `DireccionclID` int NOT NULL AUTO_INCREMENT,
+  `Calle` varchar(60) NOT NULL,
+  `Número` int NOT NULL,
+  `Colonia` varchar(50) NOT NULL,
+  `CP` int NOT NULL,
+  `Ciudad` varchar(50) NOT NULL,
+  `Estado` varchar(50) NOT NULL,
+  `País` varchar(30) NOT NULL,
+  PRIMARY KEY (`DireccionclID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into direccioncliente
+                                   -> values(1,"Industrias", 11101, "Complejo industrial Chihuahua", 31000, "Chihuahua", "Chihuahua", 1)
+                                   -> ;
+Query OK, 1 row affected (0.0314 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from cliente;
++-----------+--------+-----------+
+| ClienteID | Nombre | Apellidos |
++-----------+--------+-----------+
+|         1 | Juan   | Pérez     |
+|         2 | Pedro  | Páramo    |
+|         3 | Rubén  | Hernández |
+|         4 | Otro   | Cliente   |
++-----------+--------+-----------+
+4 rows in set (0.0005 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from direccioncliente;
++---------------+------------+--------+-------------------------------+-------+-----------+-----------+------+
+| DireccionclID | Calle      | Número | Colonia                       | CP    | Ciudad    | Estado    | País |
++---------------+------------+--------+-------------------------------+-------+-----------+-----------+------+
+|             1 | Industrias |  11101 | Complejo industrial Chihuahua | 31000 | Chihuahua | Chihuahua | 1    |
++---------------+------------+--------+-------------------------------+-------+-----------+-----------+------+
+1 row in set (0.0005 sec)
+ MySQL  localhost:3306 ssl  t2  SQL >
