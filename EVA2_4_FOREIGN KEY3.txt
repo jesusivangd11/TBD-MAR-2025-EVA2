@@ -1,0 +1,729 @@
+EVA2_4_FOREIGN KEY3
+
+MySQL Shell 8.0.35
+
+Copyright (c) 2016, 2023, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > \c --mc root@localhost
+Creating a Classic session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 8
+Server version: 8.0.35 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > uste t2;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'uste t2' at line 1
+ MySQL  localhost:3306 ssl  SQL > use t2;
+Default schema set to `t2`.
+Fetching global names, object names from `t2` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  t2  SQL > show tables;
++------------------+
+| Tables_in_t2     |
++------------------+
+| banco            |
+| cliente          |
+| direccioncliente |
+| producto         |
+| tarjeta          |
+| tarjetacliente   |
+| venta            |
+| venta_detalle    |
++------------------+
+8 rows in set (0.0080 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > desc venta;
++-------------+------+------+-----+---------+----------------+
+| Field       | Type | Null | Key | Default | Extra          |
++-------------+------+------+-----+---------+----------------+
+| VentaID     | int  | NO   | PRI | NULL    | auto_increment |
+| Fecha_venta | date | NO   |     | NULL    |                |
+| ClienteID   | int  | NO   | MUL | NULL    |                |
++-------------+------+------+-----+---------+----------------+
+3 rows in set (0.0305 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > show create venta_detalle;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'venta_detalle' at line 1
+ MySQL  localhost:3306 ssl  t2  SQL > show create ventadetalle;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ventadetalle' at line 1
+ MySQL  localhost:3306 ssl  t2  SQL > select * from ventas;
+ERROR: 1146 (42S02): Table 't2.ventas' doesn't exist
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta;
++---------+-------------+-----------+
+| VentaID | Fecha_venta | ClienteID |
++---------+-------------+-----------+
+|       1 | 2025-03-06  |         1 |
+|       2 | 2025-11-04  |         2 |
+|       3 | 2025-03-06  |         2 |
+|       4 | 2025-02-04  |         2 |
+|       5 | 2025-09-09  |         3 |
+|       6 | 2025-11-02  |         4 |
++---------+-------------+-----------+
+6 rows in set (0.0456 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta_detalle;
++----------------+---------+------------+----------+
+| Ventadetalleid | VentaID | ProductoID | Cantidad |
++----------------+---------+------------+----------+
+|             22 |       1 |          1 |        5 |
+|             23 |       1 |          2 |        3 |
+|             24 |       2 |          2 |        5 |
+|             25 |       6 |          1 |        4 |
+|             26 |       1 |          2 |        3 |
+|             27 |       4 |          3 |        4 |
+|             28 |       3 |          3 |        3 |
++----------------+---------+------------+----------+
+7 rows in set (0.0168 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from cliente;
++-----------+--------+-----------+
+| ClienteID | Nombre | Apellidos |
++-----------+--------+-----------+
+|         1 | Juan   | Pérez     |
+|         2 | Pedro  | Páramo    |
+|         3 | Rubén  | Hernández |
+|         4 | Otro   | Cliente   |
++-----------+--------+-----------+
+4 rows in set (0.0403 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from producto;
++------------+-----------+----------+--------+
+| ProductoID | Nombre    | Precio   | Unidad |
++------------+-----------+----------+--------+
+|          1 | Laptop    | 20000.50 | Pieza  |
+|          2 | Pantalla  |  5000.45 | Pieza  |
+|          3 | Audífonos |  1000.50 | Pieza  |
++------------+-----------+----------+--------+
+3 rows in set (0.0388 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from cliente;
++-----------+--------+-----------+
+| ClienteID | Nombre | Apellidos |
++-----------+--------+-----------+
+|         1 | Juan   | Pérez     |
+|         2 | Pedro  | Páramo    |
+|         3 | Rubén  | Hernández |
+|         4 | Otro   | Cliente   |
++-----------+--------+-----------+
+4 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from cliente
+                                   -> where clienteid=1;
++-----------+--------+-----------+
+| ClienteID | Nombre | Apellidos |
++-----------+--------+-----------+
+|         1 | Juan   | Pérez     |
++-----------+--------+-----------+
+1 row in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta where clienteid=1;
++---------+-------------+-----------+
+| VentaID | Fecha_venta | ClienteID |
++---------+-------------+-----------+
+|       1 | 2025-03-06  |         1 |
++---------+-------------+-----------+
+1 row in set (0.0048 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > update cliente
+                                   -> set clienteID=5
+                                   -> where clienteID=1;
+ERROR: 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`t2`.`tarjetacliente`, CONSTRAINT `tarjetacliente_ibfk_1` FOREIGN KEY (`ClienteID`) REFERENCES `cliente` (`ClienteID`))
+ MySQL  localhost:3306 ssl  t2  SQL > show create table cliente;
++---------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table   | Create Table
+
+                     |
++---------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| cliente | CREATE TABLE `cliente` (
+  `ClienteID` int NOT NULL AUTO_INCREMENT,
+  `Nombre` varchar(50) NOT NULL,
+  `Apellidos` varchar(50) NOT NULL,
+  PRIMARY KEY (`ClienteID`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++---------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0264 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > show create table direccioncliente;
++------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table            | Create Table
+
+
+                                                         |
++------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| direccioncliente | CREATE TABLE `direccioncliente` (
+  `DireccionclID` int NOT NULL AUTO_INCREMENT,
+  `Calle` varchar(60) NOT NULL,
+  `Número` int NOT NULL,
+  `Colonia` varchar(50) NOT NULL,
+  `CP` int NOT NULL,
+  `Ciudad` varchar(50) NOT NULL,
+  `Estado` varchar(50) NOT NULL,
+  `País` varchar(30) NOT NULL,
+  PRIMARY KEY (`DireccionclID`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0021 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > alter table direccioncliente
+                                   ->
+                                   -> ;
+Query OK, 0 rows affected (0.0337 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from direccioncliente;
++---------------+------------+--------+-------------------------------+-------+-----------+-----------+------+
+| DireccionclID | Calle      | Número | Colonia                       | CP    | Ciudad    | Estado    | País |
++---------------+------------+--------+-------------------------------+-------+-----------+-----------+------+
+|             1 | Industrias |  11101 | Complejo industrial Chihuahua | 31000 | Chihuahua | Chihuahua | 1    |
++---------------+------------+--------+-------------------------------+-------+-----------+-----------+------+
+1 row in set (0.0153 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from cliente where clienteid=1;
++-----------+--------+-----------+
+| ClienteID | Nombre | Apellidos |
++-----------+--------+-----------+
+|         1 | Juan   | Pérez     |
++-----------+--------+-----------+
+1 row in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta where clienteid=1;
++---------+-------------+-----------+
+| VentaID | Fecha_venta | ClienteID |
++---------+-------------+-----------+
+|       1 | 2025-03-06  |         1 |
++---------+-------------+-----------+
+1 row in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > alter table tarjetacliente
+                                   -> ^C
+ MySQL  localhost:3306 ssl  t2  SQL > select * from ventadetalle
+                                   -> where ventaid=1;
+ERROR: 1146 (42S02): Table 't2.ventadetalle' doesn't exist
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta_detalle where ventaid=1;
++----------------+---------+------------+----------+
+| Ventadetalleid | VentaID | ProductoID | Cantidad |
++----------------+---------+------------+----------+
+|             22 |       1 |          1 |        5 |
+|             23 |       1 |          2 |        3 |
+|             26 |       1 |          2 |        3 |
++----------------+---------+------------+----------+
+3 rows in set (0.0047 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta_detalle where ventaid=1;
++----------------+---------+------------+----------+
+| Ventadetalleid | VentaID | ProductoID | Cantidad |
++----------------+---------+------------+----------+
+|             22 |       1 |          1 |        5 |
+|             23 |       1 |          2 |        3 |
+|             26 |       1 |          2 |        3 |
++----------------+---------+------------+----------+
+3 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta_detalle where ventaid=3;
++----------------+---------+------------+----------+
+| Ventadetalleid | VentaID | ProductoID | Cantidad |
++----------------+---------+------------+----------+
+|             28 |       3 |          3 |        3 |
++----------------+---------+------------+----------+
+1 row in set (0.0005 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > delete from cliente
+                                   -> where clienteid=5;
+Query OK, 0 rows affected (0.0275 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from cliente;
++-----------+--------+-----------+
+| ClienteID | Nombre | Apellidos |
++-----------+--------+-----------+
+|         1 | Juan   | Pérez     |
+|         2 | Pedro  | Páramo    |
+|         3 | Rubén  | Hernández |
+|         4 | Otro   | Cliente   |
++-----------+--------+-----------+
+4 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > delete from cliente where clienteid=1;
+ERROR: 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`t2`.`tarjetacliente`, CONSTRAINT `tarjetacliente_ibfk_1` FOREIGN KEY (`ClienteID`) REFERENCES `cliente` (`ClienteID`))
+ MySQL  localhost:3306 ssl  t2  SQL > show create table direccioncliente;
++------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table            | Create Table
+
+
+                                                         |
++------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| direccioncliente | CREATE TABLE `direccioncliente` (
+  `DireccionclID` int NOT NULL AUTO_INCREMENT,
+  `Calle` varchar(60) NOT NULL,
+  `Número` int NOT NULL,
+  `Colonia` varchar(50) NOT NULL,
+  `CP` int NOT NULL,
+  `Ciudad` varchar(50) NOT NULL,
+  `Estado` varchar(50) NOT NULL,
+  `País` varchar(30) NOT NULL,
+  PRIMARY KEY (`DireccionclID`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0008 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > show create table venta;
++-------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table | Create Table
+
+
+                                          |
++-------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| venta | CREATE TABLE `venta` (
+  `VentaID` int NOT NULL AUTO_INCREMENT,
+  `Fecha_venta` date NOT NULL,
+  `ClienteID` int NOT NULL,
+  PRIMARY KEY (`VentaID`),
+  KEY `ClienteID` (`ClienteID`),
+  CONSTRAINT `venta_ibfk_1` FOREIGN KEY (`ClienteID`) REFERENCES `cliente` (`ClienteID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++-------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0267 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > alter table venta
+                                   -> drop constraint venta_ibfk_1;
+Query OK, 0 rows affected (0.0268 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  t2  SQL > alter table venta
+                                   -> add foreign key(clienteID) references cliente(clienteID)
+                                   -> on delete restrict
+                                   -> on update cascade;
+Query OK, 6 rows affected (0.0875 sec)
+
+Records: 6  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  t2  SQL > show create table venta:
+                                   -> ;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ':' at line 1
+ MySQL  localhost:3306 ssl  t2  SQL > show create table venta;
++-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table | Create Table
+
+
+                                           |
++-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| venta | CREATE TABLE `venta` (
+  `VentaID` int NOT NULL AUTO_INCREMENT,
+  `Fecha_venta` date NOT NULL,
+  `ClienteID` int NOT NULL,
+  PRIMARY KEY (`VentaID`),
+  KEY `ClienteID` (`ClienteID`),
+  CONSTRAINT `venta_ibfk_1` FOREIGN KEY (`ClienteID`) REFERENCES `cliente` (`ClienteID`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta;
++---------+-------------+-----------+
+| VentaID | Fecha_venta | ClienteID |
++---------+-------------+-----------+
+|       1 | 2025-03-06  |         1 |
+|       2 | 2025-11-04  |         2 |
+|       3 | 2025-03-06  |         2 |
+|       4 | 2025-02-04  |         2 |
+|       5 | 2025-09-09  |         3 |
+|       6 | 2025-11-02  |         4 |
++---------+-------------+-----------+
+6 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > sekect * from cliente
+                                   -> where clienteid=2;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'sekect * from cliente
+where clienteid=2' at line 1
+ MySQL  localhost:3306 ssl  t2  SQL > select * from cliente where clienteid=2;
++-----------+--------+-----------+
+| ClienteID | Nombre | Apellidos |
++-----------+--------+-----------+
+|         2 | Pedro  | Páramo    |
++-----------+--------+-----------+
+1 row in set (0.0014 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > delete from cliente where clienteid = 2;
+ERROR: 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`t2`.`tarjetacliente`, CONSTRAINT `tarjetacliente_ibfk_1` FOREIGN KEY (`ClienteID`) REFERENCES `cliente` (`ClienteID`))
+ MySQL  localhost:3306 ssl  t2  SQL > update cliente
+                                   -> set clienteid= 5
+                                   -> where clienteid=2;
+ERROR: 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`t2`.`tarjetacliente`, CONSTRAINT `tarjetacliente_ibfk_1` FOREIGN KEY (`ClienteID`) REFERENCES `cliente` (`ClienteID`))
+ MySQL  localhost:3306 ssl  t2  SQL > alter table venta drop constraint tarjetacliente_ibfk_1;
+ERROR: 3940 (HY000): Constraint 'tarjetacliente_ibfk_1' does not exist.
+ MySQL  localhost:3306 ssl  t2  SQL > alter table venta drop constraint tarjeta_cliente_ibfk_1;
+ERROR: 3940 (HY000): Constraint 'tarjeta_cliente_ibfk_1' does not exist.
+ MySQL  localhost:3306 ssl  t2  SQL > alter table venta drop constraint tarjeta_cliente_ibfk_1;show tables;
+ERROR: 3940 (HY000): Constraint 'tarjeta_cliente_ibfk_1' does not exist.
++------------------+
+| Tables_in_t2     |
++------------------+
+| banco            |
+| cliente          |
+| direccioncliente |
+| producto         |
+| tarjeta          |
+| tarjetacliente   |
+| venta            |
+| venta_detalle    |
++------------------+
+8 rows in set (0.0012 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > show create table tarjetacliente;
++----------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table          | Create Table
+
+
+
+
+                                                                              |
++----------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| tarjetacliente | CREATE TABLE `tarjetacliente` (
+  `TarjetaclID` int NOT NULL AUTO_INCREMENT,
+  `ClienteID` int NOT NULL,
+  `BancoID` int NOT NULL,
+  `TarjetaID` int NOT NULL,
+  PRIMARY KEY (`TarjetaclID`),
+  KEY `ClienteID` (`ClienteID`),
+  KEY `BancoID` (`BancoID`),
+  KEY `TarjetaID` (`TarjetaID`),
+  CONSTRAINT `tarjetacliente_ibfk_1` FOREIGN KEY (`ClienteID`) REFERENCES `cliente` (`ClienteID`),
+  CONSTRAINT `tarjetacliente_ibfk_2` FOREIGN KEY (`BancoID`) REFERENCES `banco` (`BancoID`),
+  CONSTRAINT `tarjetacliente_ibfk_3` FOREIGN KEY (`TarjetaID`) REFERENCES `tarjeta` (`TarjetaID`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++----------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0013 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > alter table tarjetacliente drop constraint tarjetacliente_ibfk_1;
+Query OK, 0 rows affected (1.2432 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  t2  SQL > update cliente set clienteid= 5 where clienteid=2;
+Query OK, 1 row affected (0.0119 sec)
+
+Rows matched: 1  Changed: 1  Warnings: 0
+ MySQL  localhost:3306 ssl  t2  SQL > select * from cliente;
++-----------+--------+-----------+
+| ClienteID | Nombre | Apellidos |
++-----------+--------+-----------+
+|         1 | Juan   | Pérez     |
+|         3 | Rubén  | Hernández |
+|         4 | Otro   | Cliente   |
+|         5 | Pedro  | Páramo    |
++-----------+--------+-----------+
+4 rows in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta;
++---------+-------------+-----------+
+| VentaID | Fecha_venta | ClienteID |
++---------+-------------+-----------+
+|       1 | 2025-03-06  |         1 |
+|       2 | 2025-11-04  |         5 |
+|       3 | 2025-03-06  |         5 |
+|       4 | 2025-02-04  |         5 |
+|       5 | 2025-09-09  |         3 |
+|       6 | 2025-11-02  |         4 |
++---------+-------------+-----------+
+6 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta_detalle;
++----------------+---------+------------+----------+
+| Ventadetalleid | VentaID | ProductoID | Cantidad |
++----------------+---------+------------+----------+
+|             22 |       1 |          1 |        5 |
+|             23 |       1 |          2 |        3 |
+|             24 |       2 |          2 |        5 |
+|             25 |       6 |          1 |        4 |
+|             26 |       1 |          2 |        3 |
+|             27 |       4 |          3 |        4 |
+|             28 |       3 |          3 |        3 |
++----------------+---------+------------+----------+
+7 rows in set (0.0008 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > show create table venta_detalle;
++---------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table         | Create Table
+
+
+
+
+                          |
++---------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| venta_detalle | CREATE TABLE `venta_detalle` (
+  `Ventadetalleid` int NOT NULL AUTO_INCREMENT,
+  `VentaID` int NOT NULL,
+  `ProductoID` int NOT NULL,
+  `Cantidad` int NOT NULL,
+  PRIMARY KEY (`Ventadetalleid`),
+  KEY `VentaID` (`VentaID`),
+  KEY `ProductoID` (`ProductoID`),
+  CONSTRAINT `venta_detalle_ibfk_1` FOREIGN KEY (`VentaID`) REFERENCES `venta` (`VentaID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `venta_detalle_ibfk_2` FOREIGN KEY (`ProductoID`) REFERENCES `producto` (`ProductoID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++---------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta_detalle;
++----------------+---------+------------+----------+
+| Ventadetalleid | VentaID | ProductoID | Cantidad |
++----------------+---------+------------+----------+
+|             22 |       1 |          1 |        5 |
+|             23 |       1 |          2 |        3 |
+|             24 |       2 |          2 |        5 |
+|             25 |       6 |          1 |        4 |
+|             26 |       1 |          2 |        3 |
+|             27 |       4 |          3 |        4 |
+|             28 |       3 |          3 |        3 |
++----------------+---------+------------+----------+
+7 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from prodcut;
+ERROR: 1146 (42S02): Table 't2.prodcut' doesn't exist
+ MySQL  localhost:3306 ssl  t2  SQL > select * from producto;
++------------+-----------+----------+--------+
+| ProductoID | Nombre    | Precio   | Unidad |
++------------+-----------+----------+--------+
+|          1 | Laptop    | 20000.50 | Pieza  |
+|          2 | Pantalla  |  5000.45 | Pieza  |
+|          3 | Audífonos |  1000.50 | Pieza  |
++------------+-----------+----------+--------+
+3 rows in set (0.0005 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > delete producto
+                                   -> where productoid=1;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where productoid=1' at line 2
+ MySQL  localhost:3306 ssl  t2  SQL > delete from producto where productoid=1;
+Query OK, 1 row affected (0.0050 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from producto;
++------------+-----------+---------+--------+
+| ProductoID | Nombre    | Precio  | Unidad |
++------------+-----------+---------+--------+
+|          2 | Pantalla  | 5000.45 | Pieza  |
+|          3 | Audífonos | 1000.50 | Pieza  |
++------------+-----------+---------+--------+
+2 rows in set (0.0005 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta_detalle;
++----------------+---------+------------+----------+
+| Ventadetalleid | VentaID | ProductoID | Cantidad |
++----------------+---------+------------+----------+
+|             23 |       1 |          2 |        3 |
+|             24 |       2 |          2 |        5 |
+|             26 |       1 |          2 |        3 |
+|             27 |       4 |          3 |        4 |
+|             28 |       3 |          3 |        3 |
++----------------+---------+------------+----------+
+5 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > use sakila;
+Default schema set to `sakila`.
+Fetching global names, object names from `sakila` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  sakila  SQL > show tables;
++----------------------------+
+| Tables_in_sakila           |
++----------------------------+
+| actor                      |
+| actor_info                 |
+| address                    |
+| category                   |
+| city                       |
+| country                    |
+| customer                   |
+| customer_list              |
+| film                       |
+| film_actor                 |
+| film_category              |
+| film_list                  |
+| film_text                  |
+| inventory                  |
+| language                   |
+| nicer_but_slower_film_list |
+| payment                    |
+| rental                     |
+| sales_by_film_category     |
+| sales_by_store             |
+| staff                      |
+| staff_list                 |
+| store                      |
++----------------------------+
+23 rows in set (0.0016 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > desc film;
++----------------------+---------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+| Field                | Type                                                                | Null | Key | Default           | Extra                                         |
++----------------------+---------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+| film_id              | smallint unsigned                                                   | NO   | PRI | NULL              | auto_increment                                |
+| title                | varchar(128)                                                        | NO   | MUL | NULL              |                                               |
+| description          | text                                                                | YES  |     | NULL              |                                               |
+| release_year         | year                                                                | YES  |     | NULL              |                                               |
+| language_id          | tinyint unsigned                                                    | NO   | MUL | NULL              |                                               |
+| original_language_id | tinyint unsigned                                                    | YES  | MUL | NULL              |                                               |
+| rental_duration      | tinyint unsigned                                                    | NO   |     | 3
+      |                                               |
+| rental_rate          | decimal(4,2)                                                        | NO   |     | 4.99              |                                               |
+| length               | smallint unsigned                                                   | YES  |     | NULL              |                                               |
+| replacement_cost     | decimal(5,2)                                                        | NO   |     | 19.99             |                                               |
+| rating               | enum('G','PG','PG-13','R','NC-17')                                  | YES  |     | G
+      |                                               |
+| special_features     | set('Trailers','Commentaries','Deleted Scenes','Behind the Scenes') | YES  |     | NULL              |                                               |
+| last_update          | timestamp                                                           | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++----------------------+---------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+13 rows in set (0.0276 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > desc actor;
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| Field       | Type              | Null | Key | Default           | Extra                                         |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| actor_id    | smallint unsigned | NO   | PRI | NULL              | auto_increment                                |
+| first_name  | varchar(45)       | NO   |     | NULL              |                                               |
+| last_name   | varchar(45)       | NO   | MUL | NULL              |                                               |
+| last_update | timestamp         | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+4 rows in set (0.0019 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > desc language;
++-------------+------------------+------+-----+-------------------+-----------------------------------------------+
+| Field       | Type             | Null | Key | Default           | Extra                                         |
++-------------+------------------+------+-----+-------------------+-----------------------------------------------+
+| language_id | tinyint unsigned | NO   | PRI | NULL              | auto_increment                                |
+| name        | char(20)         | NO   |     | NULL              |                                               |
+| last_update | timestamp        | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++-------------+------------------+------+-----+-------------------+-----------------------------------------------+
+3 rows in set (0.0019 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > desc country;
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| Field       | Type              | Null | Key | Default           | Extra                                         |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| country_id  | smallint unsigned | NO   | PRI | NULL              | auto_increment                                |
+| country     | varchar(50)       | NO   |     | NULL              |                                               |
+| last_update | timestamp         | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+3 rows in set (0.0018 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > desc city;
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| Field       | Type              | Null | Key | Default           | Extra                                         |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| city_id     | smallint unsigned | NO   | PRI | NULL              | auto_increment                                |
+| city        | varchar(50)       | NO   |     | NULL              |                                               |
+| country_id  | smallint unsigned | NO   | MUL | NULL              |                                               |
+| last_update | timestamp         | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+4 rows in set (0.0019 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > select count(*) from country;
++----------+
+| count(*) |
++----------+
+|      109 |
++----------+
+1 row in set (0.0800 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL > select count(*) from ccity;
+ERROR: 1146 (42S02): Table 'sakila.ccity' doesn't exist
+ MySQL  localhost:3306 ssl  sakila  SQL > select count(*) from city;
++----------+
+| count(*) |
++----------+
+|      600 |
++----------+
+1 row in set (0.0422 sec)
+ MySQL  localhost:3306 ssl  sakila  SQL >
+
+MySQL Shell 8.0.35
+
+Copyright (c) 2016, 2023, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > \c --mc root@localhost
+Creating a Classic session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 8
+Server version: 8.0.35 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > usez td2;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'usez td2' at line 1
+ MySQL  localhost:3306 ssl  SQL > use td2;
+MySQL Error 1049: Unknown database 'td2'
+ MySQL  localhost:3306 ssl  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| t2                 |
+| tarjetas           |
+| tbd_eva_1          |
+| world              |
++--------------------+
+9 rows in set (0.0282 sec)
+ MySQL  localhost:3306 ssl  SQL > use t2;
+Default schema set to `t2`.
+Fetching global names, object names from `t2` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  t2  SQL > create table country_copy like sakila.country;
+Query OK, 0 rows affected (0.0497 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > create table city_copy like sakila.city;
+Query OK, 0 rows affected (0.0458 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into country_copy select * from  sakila.country;
+Query OK, 109 rows affected (0.0197 sec)
+
+Records: 109  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  t2  SQL > insert into country_city select * from  sakila.city;
+ERROR: 1146 (42S02): Table 't2.country_city' doesn't exist
+ MySQL  localhost:3306 ssl  t2  SQL > insert into city_copy select * from  sakila.city;
+Query OK, 600 rows affected (0.0299 sec)
+
+Records: 600  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  t2  SQL > alter table city_copy
+                                   -> add foreign key (country_id)
+                                   -> references country_copy(countryid)
+                                   -> on delete cascade
+                                   -> on update cascade;
+ERROR: 3734 (HY000): Failed to add the foreign key constraint. Missing column 'countryid' for constraint 'city_copy_ibfk_1' in the referenced table 'country_copy'
+ MySQL  localhost:3306 ssl  t2  SQL > alter table city_copy foreign key (country_id) references country_copy(countryid) on delete cascade on update cascade;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'foreign key (country_id) references country_copy(countryid) on delete cascade on' at line 1
+ MySQL  localhost:3306 ssl  t2  SQL > alter table city_copy add foreign key(country_id) references country_copy(country_id) on delete cascade on update cascade;
+Query OK, 600 rows affected (0.1535 sec)
+
+Records: 600  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  t2  SQL > select * from city_copy where country_id=1;
++---------+-------+------------+---------------------+
+| city_id | city  | country_id | last_update         |
++---------+-------+------------+---------------------+
+|     251 | Kabul |          1 | 2006-02-15 04:45:25 |
++---------+-------+------------+---------------------+
+1 row in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > delete from city_copy where country_id=1;
+Query OK, 1 row affected (0.0110 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from city_copy where country_id=1;
+Empty set (0.0006 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from country_copy limit 20;
++------------+----------------+---------------------+
+| country_id | country        | last_update         |
++------------+----------------+---------------------+
+|          1 | Afghanistan    | 2006-02-15 04:44:00 |
+|          2 | Algeria        | 2006-02-15 04:44:00 |
+|          3 | American Samoa | 2006-02-15 04:44:00 |
+|          4 | Angola         | 2006-02-15 04:44:00 |
+|          5 | Anguilla       | 2006-02-15 04:44:00 |
+|          6 | Argentina      | 2006-02-15 04:44:00 |
+|          7 | Armenia        | 2006-02-15 04:44:00 |
+|          8 | Australia      | 2006-02-15 04:44:00 |
+|          9 | Austria        | 2006-02-15 04:44:00 |
+|         10 | Azerbaijan     | 2006-02-15 04:44:00 |
+|         11 | Bahrain        | 2006-02-15 04:44:00 |
+|         12 | Bangladesh     | 2006-02-15 04:44:00 |
+|         13 | Belarus        | 2006-02-15 04:44:00 |
+|         14 | Bolivia        | 2006-02-15 04:44:00 |
+|         15 | Brazil         | 2006-02-15 04:44:00 |
+|         16 | Brunei         | 2006-02-15 04:44:00 |
+|         17 | Bulgaria       | 2006-02-15 04:44:00 |
+|         18 | Cambodia       | 2006-02-15 04:44:00 |
+|         19 | Cameroon       | 2006-02-15 04:44:00 |
+|         20 | Canada         | 2006-02-15 04:44:00 |
++------------+----------------+---------------------+
+20 rows in set (0.0267 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from city_copy where country_id=50;
++---------+--------------+------------+---------------------+
+| city_id | city         | country_id | last_update         |
++---------+--------------+------------+---------------------+
+|      10 | Akishima     |         50 | 2006-02-15 04:45:25 |
+|     172 | Fukuyama     |         50 | 2006-02-15 04:45:25 |
+|     203 | Higashiosaka |         50 | 2006-02-15 04:45:25 |
+|     204 | Hino         |         50 | 2006-02-15 04:45:25 |
+|     205 | Hiroshima    |         50 | 2006-02-15 04:45:25 |
+|     224 | Isesaki      |         50 | 2006-02-15 04:45:25 |
+|     226 | Iwaki        |         50 | 2006-02-15 04:45:25 |
+|     227 | Iwakuni      |         50 | 2006-02-15 04:45:25 |
+|     228 | Iwatsuki     |         50 | 2006-02-15 04:45:25 |
+|     229 | Izumisano    |         50 | 2006-02-15 04:45:25 |
+|     253 | Kakamigahara |         50 | 2006-02-15 04:45:25 |
+|     256 | Kamakura     |         50 | 2006-02-15 04:45:25 |
+|     260 | Kanazawa     |         50 | 2006-02-15 04:45:25 |
+|     276 | Koriyama     |         50 | 2006-02-15 04:45:25 |
+|     284 | Kurashiki    |         50 | 2006-02-15 04:45:25 |
+|     287 | Kuwana       |         50 | 2006-02-15 04:45:25 |
+|     331 | Matsue       |         50 | 2006-02-15 04:45:25 |
+|     338 | Miyakonojo   |         50 | 2006-02-15 04:45:25 |
+|     355 | Nagareyama   |         50 | 2006-02-15 04:45:25 |
+|     376 | Okayama      |         50 | 2006-02-15 04:45:25 |
+|     377 | Okinawa      |         50 | 2006-02-15 04:45:25 |
+|     380 | Omiya        |         50 | 2006-02-15 04:45:25 |
+|     382 | Onomichi     |         50 | 2006-02-15 04:45:25 |
+|     386 | Otsu         |         50 | 2006-02-15 04:45:25 |
+|     440 | Sagamihara   |         50 | 2006-02-15 04:45:25 |
+|     463 | Sasebo       |         50 | 2006-02-15 04:45:25 |
+|     474 | Shimonoseki  |         50 | 2006-02-15 04:45:25 |
+|     521 | Tama         |         50 | 2006-02-15 04:45:25 |
+|     547 | Tsuyama      |         50 | 2006-02-15 04:45:25 |
+|     552 | Ueda         |         50 | 2006-02-15 04:45:25 |
+|     555 | Urawa        |         50 | 2006-02-15 04:45:25 |
++---------+--------------+------------+---------------------+
+31 rows in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > delete from city_copy where country_id=1;
