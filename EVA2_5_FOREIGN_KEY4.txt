@@ -1,0 +1,325 @@
+EVA2_5_FOREIGN_KEY4
+
+
+MySQL Shell 8.0.41
+
+Copyright (c) 2016, 2025, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > \c --mc root@localhost
+Creating a Classic session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 11
+Server version: 8.0.41 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > use tdb_eva2;
+Default schema set to `tdb_eva2`.
+Fetching global names, object names from `tdb_eva2` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > CREATE TABLE Profesores (
+                                         ->     IDProf INT PRIMARY KEY,
+                                         ->     Nombre VARCHAR(50) NOT NULL
+                                         -> );
+Query OK, 0 rows affected (0.0351 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL >
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > CREATE TABLE Estudiantes (
+                                         ->     IDEst INT PRIMARY KEY,
+                                         ->     Apellido VARCHAR(50) NOT NULL,
+                                         ->     IDProf INT,
+                                         ->     Calificacion INT CHECK (Calificacion BETWEEN 0 AND 10),
+                                         ->     FOREIGN KEY (IDProf) REFERENCES Profesores(IDProf)
+                                         -> );
+Query OK, 0 rows affected (0.1121 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > INSERT INTO Profesores (IDProf, Nombre) VALUES
+                                         -> (1, 'Bernasconi'),
+                                         -> (2, 'Borner'),
+                                         -> (3, 'Schmid');
+Query OK, 3 rows affected (0.0159 sec)
+
+Records: 3  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL >
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > INSERT INTO Estudiantes (IDEst, Apellido, IDProf, Calificacion) VALUES
+                                         -> (1, 'Mueller', 3, 5),
+                                         -> (2, 'Meier', 2, 4),
+                                         -> (3, 'Tobler', 1, 6);
+Query OK, 3 rows affected (0.0102 sec)
+
+Records: 3  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > CREATE TABLE Clientes (
+                                         ->     IDCliente INT PRIMARY KEY,
+                                         ->     Nombre VARCHAR(100) NOT NULL,
+                                         ->     Direccion VARCHAR(255) NOT NULL
+                                         -> );
+ERROR: 1050 (42S01): Table 'clientes' already exists
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > CREATE TABLE Cliente (     IDCliente INT PRIMARY KEY,     Nombre VARCHAR(100) NOT NULL,     Direccion VARCHAR(255) NOT NULL );
+Query OK, 0 rows affected (0.0507 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > CREATE TABLE Pedidos (
+                                         ->     IDPedido INT PRIMARY KEY,
+                                         ->     FechaPedido DATE NOT NULL,
+                                         ->     IDCliente INT,
+                                         ->     FOREIGN KEY (IDCliente) REFERENCES Clientes(IDCliente)
+                                         ->         ON DELETE CASCADE
+                                         ->         ON UPDATE CASCADE
+                                         -> );
+ERROR: 3734 (HY000): Failed to add the foreign key constraint. Missing column 'IDCliente' for constraint 'pedidos_ibfk_1' in the referenced table 'clientes'
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > CREATE TABLE Pedidos (     IDPedido INT PRIMARY KEY,     FechaPedido DATE NOT NULL,     IDCliente INT,     FOREIGN KEY (IDCliente) REFERENCES Cliente(IDCliente)          ON DELETE CASCADE          ON UPDATE CASCADE );
+Query OK, 0 rows affected (0.0609 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > INSERT INTO Clientes (IDCliente, Nombre, Direccion) VALUES
+                                         -> (2, 'Value Furniture', 'Plano, TX'),
+                                         -> (6, 'Furniture Gallery', 'Boulder, CO');
+ERROR: 1054 (42S22): Unknown column 'IDCliente' in 'field list'
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > INSERT INTO Clientes (IDCliente, Nombre, Direccion) VALUES
+                                         -> (2, 'Value Furniture', 'Plano, TX'),
+                                         -> (6, 'Furniture Gallery', 'Boulder, CO');
+ERROR: 1054 (42S22): Unknown column 'IDCliente' in 'field list'
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > INSERT INTO Cliente (IDCliente, Nombre, Direccion) VALUES (2, 'Value Furniture', 'Plano, TX'), (6, 'Furniture Gallery', 'Boulder, CO');
+Query OK, 2 rows affected (0.0171 sec)
+
+Records: 2  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > INSERT INTO Pedidos (IDPedido, FechaPedido, IDCliente) VALUES
+                                         -> (1006, '2004-10-24', 2),
+                                         -> (1007, '2004-10-25', 6),
+                                         -> (1008, '2004-11-01', 2);
+Query OK, 3 rows affected (0.0179 sec)
+
+Records: 3  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL >
+MySQL  localhost:3306 ssl  tdb_eva2  SQL > CREATE TABLE Customers (
+                                         ->     Cust_Code VARCHAR(10) PRIMARY KEY,
+                                         ->     Cust_Name VARCHAR(100) NOT NULL
+                                         -> );
+Query OK, 0 rows affected (0.1060 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > CREATE TABLE Items (
+                                         ->     Item_Number VARCHAR(20) PRIMARY KEY,
+                                         ->     Item_Name VARCHAR(100) NOT NULL
+                                         -> );
+Query OK, 0 rows affected (0.0209 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > CREATE TABLE Orders (
+                                         ->     SO_Number INT PRIMARY KEY,
+                                         ->     Cust_Code VARCHAR(10) NOT NULL,
+                                         ->     FOREIGN KEY (Cust_Code) REFERENCES Customers(Cust_Code)
+                                         -> );
+Query OK, 0 rows affected (0.0785 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > drop table Customers;
+ERROR: 3730 (HY000): Cannot drop table 'customers' referenced by a foreign key constraint 'orders_ibfk_1' on table 'orders'.
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > ALTER TABLE Orders DROP CONSTRAINT Orders_Cust_Code_fkey;
+ERROR: 3940 (HY000): Constraint 'Orders_Cust_Code_fkey' does not exist.
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > ALTER TABLE Orders DROP CONSTRAINT Orders_ibfk_1;
+Query OK, 0 rows affected (0.0375 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > drop table Customers;
+Query OK, 0 rows affected (0.0277 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > show tables;
++--------------------+
+| Tables_in_tdb_eva2 |
++--------------------+
+| bancos             |
+| city_copy          |
+| clientes           |
+| country_copy       |
+| direccion_cliente  |
+| ids                |
+| items              |
+| orders             |
+| prducto            |
+| prof               |
+| students           |
+| tarjetas           |
+| tarjetasclientes   |
+| venta              |
+| venta_detalle      |
++--------------------+
+15 rows in set (0.0090 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > drop table Items;
+Query OK, 0 rows affected (0.0327 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > drop table  Orders;
+Query OK, 0 rows affected (0.0350 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > CREATE TABLE Customers (
+                                         ->     Cust_Code VARCHAR(10) PRIMARY KEY,
+                                         ->     Cust_Name VARCHAR(100) NOT NULL
+                                         -> );
+Query OK, 0 rows affected (0.0477 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > CREATE TABLE Items (
+                                         ->     Item_Number VARCHAR(20) PRIMARY KEY,
+                                         ->     Item_Name VARCHAR(100) NOT NULL
+                                         -> );
+Query OK, 0 rows affected (0.0497 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > CREATE TABLE Orders (
+                                         ->     SO_Number INT PRIMARY KEY,
+                                         ->     Cust_Code VARCHAR(10) NOT NULL,
+                                         ->     FOREIGN KEY (Cust_Code) REFERENCES Customers(Cust_Code)
+                                         ->     ON DELETE CASCADE
+                                         ->     ON UPDATE CASCADE
+                                         -> );
+Query OK, 0 rows affected (0.0301 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > CREATE TABLE Order_Details (
+                                         ->     SO_Number INT NOT NULL,
+                                         ->     Item_Number VARCHAR(20) NOT NULL,
+                                         ->     Qty_Ordered INT NOT NULL,
+                                         ->     PRIMARY KEY (SO_Number, Item_Number),
+                                         ->     FOREIGN KEY (SO_Number) REFERENCES Orders(SO_Number)
+                                         ->     ON DELETE CASCADE
+                                         ->     ON UPDATE CASCADE,
+                                         ->     FOREIGN KEY (Item_Number) REFERENCES Items(Item_Number)
+                                         ->     ON DELETE CASCADE
+                                         ->     ON UPDATE CASCADE
+                                         -> );
+Query OK, 0 rows affected (0.0910 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > INSERT INTO Customers (Cust_Code, Cust_Name) VALUES
+                                         -> ('WHEEL', 'Wheelaway Cycle Center'),
+                                         -> ('ETC', 'Bikes Et Cetera'),
+                                         -> ('IBS', 'Inter. Bicycles Sales'),
+                                         -> ('NEW', 'New (& rich) Customer');
+Query OK, 4 rows affected (0.0204 sec)
+
+Records: 4  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > INSERT INTO Items (Item_Number, Item_Name) VALUES
+                                         -> ('2010-0050', 'Formed Handlebar'),
+                                         -> ('1000-1', '20 in. Bicycle'),
+                                         -> ('1002-1', '24 in. Bicycle'),
+                                         -> ('1001-1', '26 in. Bicycle'),
+                                         -> ('1003-1', '20 in. Bicycle'),
+                                         -> ('3961-1041', 'Tire Tube, 26 in.'),
+                                         -> ('3965-1050', 'Spoke Reflector');
+Query OK, 7 rows affected (0.0101 sec)
+
+Records: 7  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > INSERT INTO Orders (SO_Number, Cust_Code) VALUES
+                                         -> (1010, 'WHEEL'),
+                                         -> (1011, 'ETC'),
+                                         -> (1012, 'WHEEL'),
+                                         -> (1013, 'IBS'),
+                                         -> (1014, 'ETC'),
+                                         -> (1015, 'WHEEL'),
+                                         -> (1016, 'ETC');
+Query OK, 7 rows affected (0.0165 sec)
+
+Records: 7  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > INSERT INTO Order_Details (SO_Number, Item_Number, Qty_Ordered) VALUES
+                                         -> (1010, '2010-0050', 2),
+                                         -> (1010, '1000-1', 5),
+                                         -> (1011, '1002-1', 5),
+                                         -> (1011, '1001-1', 10),
+                                         -> (1012, '1003-1', 5),
+                                         -> (1012, '1001-1', 10),
+                                         -> (1013, '1001-1', 50),
+                                         -> (1014, '1003-1', 25),
+                                         -> (1015, '1003-1', 25),
+                                         -> (1016, '3961-1041', 5),
+                                         -> (1016, '3965-1050', 50),
+                                         -> (1016, '1003-1', 5),
+                                         -> (1016, '1000-1', 4);
+Query OK, 13 rows affected (0.0177 sec)
+
+Records: 13  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > CREATE TABLE Companies (
+                                         ->     Company_ID SERIAL PRIMARY KEY,
+                                         ->     Company_Name VARCHAR(100) NOT NULL,
+                                         ->     Address VARCHAR(255) NOT NULL
+                                         -> );
+Query OK, 0 rows affected (0.0632 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > CREATE TABLE Contacts (
+                                         ->     Contact_ID SERIAL PRIMARY KEY,
+                                         ->     Name VARCHAR(100) NOT NULL,
+                                         ->     Zipcode VARCHAR(10) NOT NULL,
+                                         ->     Company_ID INT NOT NULL,
+                                         ->     FOREIGN KEY (Company_ID) REFERENCES Companies(Company_ID)
+                                         ->     ON DELETE CASCADE
+                                         ->     ON UPDATE CASCADE
+                                         -> );
+ERROR: 3780 (HY000): Referencing column 'Company_ID' and referenced column 'Company_ID' in foreign key constraint 'contacts_ibfk_1' are incompatible.
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > desc companies;
++--------------+-----------------+------+-----+---------+----------------+
+| Field        | Type            | Null | Key | Default | Extra          |
++--------------+-----------------+------+-----+---------+----------------+
+| Company_ID   | bigint unsigned | NO   | PRI | NULL    | auto_increment |
+| Company_Name | varchar(100)    | NO   |     | NULL    |                |
+| Address      | varchar(255)    | NO   |     | NULL    |                |
++--------------+-----------------+------+-----+---------+----------------+
+3 rows in set (0.0046 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > drop table compamies;
+ERROR: 1051 (42S02): Unknown table 'tdb_eva2.compamies'
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > drop table companies;
+Query OK, 0 rows affected (0.0358 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > CREATE TABLE Companies (
+                                         ->     Company_ID INT PRIMARY KEY AUTO_INCREMENT,  -- Asegurar tipo INT compatible
+                                         ->     Company_Name VARCHAR(100) NOT NULL,
+                                         ->     Address VARCHAR(255) NOT NULL
+                                         -> );
+Query OK, 0 rows affected (0.0511 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > CREATE TABLE Contacts (
+                                         ->     Contact_ID INT PRIMARY KEY AUTO_INCREMENT,
+                                         ->     Name VARCHAR(100) NOT NULL,
+                                         ->     Zipcode VARCHAR(10) NOT NULL,
+                                         ->     Company_ID INT NOT NULL,  -- Asegurar tipo INT compatible con Companies.Company_ID
+                                         ->     FOREIGN KEY (Company_ID) REFERENCES Companies(Company_ID)
+                                         ->     ON DELETE CASCADE
+                                         ->     ON UPDATE CASCADE
+                                         -> );
+Query OK, 0 rows affected (0.1043 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > CREATE TABLE Phones (
+                                         ->     Phone_ID SERIAL PRIMARY KEY,
+                                         ->     Contact_ID INT NOT NULL,
+                                         ->     Phone_Number VARCHAR(20) NOT NULL,
+                                         ->     FOREIGN KEY (Contact_ID) REFERENCES Contacts(Contact_ID)
+                                         ->     ON DELETE CASCADE
+                                         ->     ON UPDATE CASCADE
+                                         -> );^C
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL >  CREATE TABLE Phones ( Phone_ID int PRIMARY KEY,Contact_ID INT NOT NULL, Phone_Number VARCHAR(20) NOT NULL,FOREIGN KEY (Contact_ID) REFERENCES Contacts(Contact_ID) ON DELETE CASCADE ON UPDATE CASCADE );
+Query OK, 0 rows affected (0.0911 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > INSERT INTO Companies (Company_Name, Address) VALUES
+                                         -> ('ABC', '123'),
+                                         -> ('XYZ', '456'),
+                                         -> ('PDQ', '789');
+Query OK, 3 rows affected (0.0190 sec)
+
+Records: 3  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > INSERT INTO Contacts (Name, Zipcode, Company_ID) VALUES
+                                         -> ('Joe', '12345', 1),
+                                         -> ('Jane', '14454', 2),
+                                         -> ('Chris', '14423', 3);
+Query OK, 3 rows affected (0.0174 sec)
+
+Records: 3  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > INSERT INTO Phones (Contact_ID, Phone_Number) VALUES
+                                         -> (1, '5532'),
+                                         -> (1, '2234'),
+                                         -> (1, '3211'),
+                                         -> (2, '3421'),
+                                         -> (3, '2341'),
+                                         -> (3, '6655');
+ERROR: 1364 (HY000): Field 'Phone_ID' doesn't have a default value
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > alter table phones change Phone_ID Phone_id int auto_increment key not null;
+ERROR: 1068 (42000): Multiple primary key defined
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > alter table phones change Phone_ID Phone_id int auto_increment  not null;
+Query OK, 0 rows affected (0.1392 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > desc phone;
+ERROR: 1146 (42S02): Table 'tdb_eva2.phone' doesn't exist
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > desc phone_id;
+ERROR: 1146 (42S02): Table 'tdb_eva2.phone_id' doesn't exist
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > desc phones;
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| Phone_id     | int         | NO   | PRI | NULL    | auto_increment |
+| Contact_ID   | int         | NO   | MUL | NULL    |                |
+| Phone_Number | varchar(20) | NO   |     | NULL    |                |
++--------------+-------------+------+-----+---------+----------------+
+3 rows in set (0.0042 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > INSERT INTO Phones (Contact_ID, Phone_Number) VALUES
+                                         -> (1, '5532'),
+                                         -> (1, '2234'),
+                                         -> (1, '3211'),
+                                         -> (2, '3421'),
+                                         -> (3, '2341'),
+                                         -> (3, '6655');
+Query OK, 6 rows affected (0.0158 sec)
+
+Records: 6  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL >a
