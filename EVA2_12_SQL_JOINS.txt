@@ -1,0 +1,282 @@
+EVA2_12_SQL_JOINS
+
+MySQL Shell 8.0.35
+
+Copyright (c) 2016, 2023, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > \c -mc root@localhost
+WARNING: The -mc option was deprecated, please use --mc instead. (Option has been processed as --mc).
+Creating a Classic session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 8
+Server version: 8.0.35 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > use northwind
+Default schema set to `northwind`.
+Fetching global names, object names from `northwind` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  northwind  SQL > SELECT o.CustomerID, SUM(od.UnitPrice * od.Quantity * (1 - od.Discount)) AS Total
+                                          -> FROM Orders o
+                                          -> JOIN OrderDetails od ON o.OrderID = od.OrderID
+                                          -> GROUP BY o.CustomerID
+                                          -> ORDER BY Total DESC
+                                          -> LIMIT 1;
++------------+-----------+
+| CustomerID | Total     |
++------------+-----------+
+| QUICK      | 117483.39 |
++------------+-----------+
+1 row in set (0.0509 sec)
+ MySQL  localhost:3306 ssl  northwind  SQL >
+1 row in set (0.0270 sec)
+ MySQL  localhost:3307 ssl  northwind  SQL > SELECT o.CustomerID, SUM(od.UnitPrice * od.Quantity * (1 - od.Discount)) AS Total
+                                          -> FROM Orders o
+                                          -> JOIN OrderDetails od ON o.OrderID = od.OrderID
+                                          -> GROUP BY o.CustomerID
+                                          -> ORDER BY Total ASC
+                                          -> LIMIT 1;
++------------+-------+
+| CustomerID | Total |
++------------+-------+
+| CENTC      | 100.8 |
++------------+-------+
+1 row in set (0.0039 sec)
+
+ MySQL  localhost:3306 ssl  northwind  SQL > SELECT o.CustomerID, SUM(od.UnitPrice * od.Quantity * (1 - od.Discount)) AS Total FROM Orders o JOIN OrderDetails od o.OrderID = od.OrderID GROUP BY o.CustomerID ORDER BY Total ASC;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'o.OrderID = od.OrderID GROUP BY o.CustomerID ORDER BY Total ASC' at line 1
+
+ MySQL  localhost:3307 ssl  northwind  SQL > SELECT o.CustomerID, SUM(od.UnitPrice * od.Quantity * (1 - od.Discount)) AS Total FROM Orders o JOIN OrderDetails od ON o.OrderID = od.OrderID GROUP BY o.CustomerID ORDER BY Total ASC ;
++------------+-----------+
+| CustomerID | Total     |
++------------+-----------+
+| CENTC      |     100.8 |
+| LAZYK      |       357 |
+| LAUGB      |     522.5 |
+| NORTS      |       649 |
+| GALED      |     836.7 |
+| ANATR      |   1402.95 |
+| ROMEY      |   1467.29 |
+| VINET      |      1480 |
+| GROSR      |    1488.7 |
+| FRANS      |    1545.7 |
+| TRAIH      |    1571.2 |
+| DUMON      |    1615.9 |
+| CONSH      |    1719.1 |
+| CACTU      |    1814.8 |
+| THECR      |   1947.24 |
+| LACOR      |   1992.05 |
+| SPECD      |   2423.35 |
+| RANCH      |    2844.1 |
+| HUNGC      |    3063.2 |
+| WILMK      |   3161.35 |
+| FRANR      |   3172.16 |
+| BLAUS      |    3239.8 |
+| THEBI      |      3361 |
+| OCEAN      |    3460.2 |
+| LETSS      |   3490.02 |
+| WOLZA      |   3531.95 |
+| DRACD      |   3763.21 |
+| COMMI      |   3810.75 |
+| PERIC      |    4242.2 |
+| LONEP      |    4258.6 |
+| FAMIA      |    4438.9 |
+| ALFKI      |    4596.2 |
+| TOMSP      |      4954 |
+| MORGK      |    5042.2 |
+| BOLID      |    5297.8 |
+| PRINI      |    5317.1 |
+| SANTG      |   5735.15 |
+| BSBEV      |    6089.9 |
+| ISLAT      |    6146.3 |
+| WELLI      |    6480.7 |
+| QUEDE      |   6973.63 |
+| FURIB      |   7151.55 |
+| TRADH      |   7310.62 |
+| ANTON      |   7515.35 |
+| REGGC      |    7555.6 |
+| MAGAA      |   7603.85 |
+| GOURL      |   8702.23 |
+| VICTE      |    9937.1 |
+| LAMAI      |  10272.35 |
+| MAISD      |  10430.58 |
+| WANDK      |  10653.85 |
+| TORTU      |  10812.15 |
+| FOLIG      |   11666.9 |
+| GODOS      |   11830.1 |
+| SPLIR      |   12489.7 |
+| CHOPS      |   12886.3 |
+| RICAR      |   12924.4 |
+| OTTIK      |   13157.5 |
+| AROUT      |   13806.5 |
+| EASTC      |  15033.66 |
+| OLDWO      |  16325.15 |
+| WARTH      |   16617.1 |
+| VAFFE      |   16643.8 |
+| SEVES      |  17172.05 |
+| LILAS      |  17825.06 |
+| LINOD      |  17889.55 |
+| SIMOB      |  18138.45 |
+| BLONP      |     19088 |
+| GREAL      |  19711.13 |
+| RICSU      |   20033.2 |
+| LEHMS      |  21282.02 |
+| BOTTM      |   22607.7 |
+| HILAA      |  23611.58 |
+| BONAP      |  23850.95 |
+| SUPRD      |   24704.4 |
+| PICCO      |  26259.95 |
+| BERGS      |  26968.15 |
+| FRANK      |  28722.71 |
+| WHITC      |  29073.45 |
+| QUEEN      |   30226.1 |
+| KOENE      |  31745.75 |
+| MEREP      |   32203.9 |
+| FOLKO      |  32555.55 |
+| HANAR      |  34101.15 |
+| RATTC      |   52245.9 |
+| HUNGO      |  57317.39 |
+| ERNSH      | 113236.68 |
+| SAVEA      | 115673.39 |
+| QUICK      | 117483.39 |
++------------+-----------+
+89 rows in set (0.0051 sec)
+ MySQL  localhost:3307 ssl  northwind  SQL > SELECT o.CustomerID, SUM(od.UnitPrice * od.Quantity * (1 - od.Discount)) AS Total FROM Orders o JOIN OrderDetails od ON o.OrderID = od.OrderID GROUP BY o.CustomerID ORDER BY Total DESC ;
++------------+-----------+
+| CustomerID | Total     |
++------------+-----------+
+| QUICK      | 117483.39 |
+| SAVEA      | 115673.39 |
+| ERNSH      | 113236.68 |
+| HUNGO      |  57317.39 |
+| RATTC      |   52245.9 |
+| HANAR      |  34101.15 |
+| FOLKO      |  32555.55 |
+| MEREP      |   32203.9 |
+| KOENE      |  31745.75 |
+| QUEEN      |   30226.1 |
+| WHITC      |  29073.45 |
+| FRANK      |  28722.71 |
+| BERGS      |  26968.15 |
+| PICCO      |  26259.95 |
+| SUPRD      |   24704.4 |
+| BONAP      |  23850.95 |
+| HILAA      |  23611.58 |
+| BOTTM      |   22607.7 |
+| LEHMS      |  21282.02 |
+| RICSU      |   20033.2 |
+| GREAL      |  19711.13 |
+| BLONP      |     19088 |
+| SIMOB      |  18138.45 |
+| LINOD      |  17889.55 |
+| LILAS      |  17825.06 |
+| SEVES      |  17172.05 |
+| VAFFE      |   16643.8 |
+| WARTH      |   16617.1 |
+| OLDWO      |  16325.15 |
+| EASTC      |  15033.66 |
+| AROUT      |   13806.5 |
+| OTTIK      |   13157.5 |
+| RICAR      |   12924.4 |
+| CHOPS      |   12886.3 |
+| SPLIR      |   12489.7 |
+| GODOS      |   11830.1 |
+| FOLIG      |   11666.9 |
+| TORTU      |  10812.15 |
+| WANDK      |  10653.85 |
+| MAISD      |  10430.58 |
+| LAMAI      |  10272.35 |
+| VICTE      |    9937.1 |
+| GOURL      |   8702.23 |
+| MAGAA      |   7603.85 |
+| REGGC      |    7555.6 |
+| ANTON      |   7515.35 |
+| TRADH      |   7310.62 |
+| FURIB      |   7151.55 |
+| QUEDE      |   6973.63 |
+| WELLI      |    6480.7 |
+| ISLAT      |    6146.3 |
+| BSBEV      |    6089.9 |
+| SANTG      |   5735.15 |
+| PRINI      |    5317.1 |
+| BOLID      |    5297.8 |
+| MORGK      |    5042.2 |
+| TOMSP      |      4954 |
+| ALFKI      |    4596.2 |
+| FAMIA      |    4438.9 |
+| LONEP      |    4258.6 |
+| PERIC      |    4242.2 |
+| COMMI      |   3810.75 |
+| DRACD      |   3763.21 |
+| WOLZA      |   3531.95 |
+| LETSS      |   3490.02 |
+| OCEAN      |    3460.2 |
+| THEBI      |      3361 |
+| BLAUS      |    3239.8 |
+| FRANR      |   3172.16 |
+| WILMK      |   3161.35 |
+| HUNGC      |    3063.2 |
+| RANCH      |    2844.1 |
+| SPECD      |   2423.35 |
+| LACOR      |   1992.05 |
+| THECR      |   1947.24 |
+| CACTU      |    1814.8 |
+| CONSH      |    1719.1 |
+| DUMON      |    1615.9 |
+| TRAIH      |    1571.2 |
+| FRANS      |    1545.7 |
+| GROSR      |    1488.7 |
+| VINET      |      1480 |
+| ROMEY      |   1467.29 |
+| ANATR      |   1402.95 |
+| GALED      |     836.7 |
+| NORTS      |       649 |
+| LAUGB      |     522.5 |
+| LAZYK      |       357 |
+| CENTC      |     100.8 |
++------------+-----------+
+89 rows in set (0.0050 sec)
+ MySQL  localhost:3307 ssl  northwind  SQL > SELECT o.CustomerID, SUM(od.UnitPrice * od.Quantity * (1 - od.Discount)) AS Total FROM Orders o JOIN OrderDetails od ON o.OrderID = od.OrderID GROUP BY o.CustomerID ORDER BY Total DESC limit 1;
++------------+-----------+
+| CustomerID | Total     |
++------------+-----------+
+| QUICK      | 117483.39 |
++------------+-----------+
+1 row in set (0.0115 sec)
+ MySQL  localhost:3307 ssl  northwind  SQL > SELECT od.ProductID, SUM(od.Quantity) AS TotalVendido
+                                          -> FROM OrderDetails od
+                                          -> GROUP BY od.ProductID
+                                          -> ORDER BY TotalVendido DESC
+                                          -> LIMIT 1;
++-----------+--------------+
+| ProductID | TotalVendido |
++-----------+--------------+
+|        60 |         1577 |
++-----------+--------------+
+1 row in set (0.0234 sec)
+ MySQL  localhost:3307 ssl  northwind  SQL > SELECT od.ProductID, SUM(od.UnitPrice * od.Quantity * (1 - od.Discount)) AS TotalGanancia
+                                          -> FROM OrderDetails od
+                                          -> GROUP BY od.ProductID
+                                          -> ORDER BY TotalGanancia DESC
+                                          -> LIMIT 1;
++-----------+---------------+
+| ProductID | TotalGanancia |
++-----------+---------------+
+|        38 |      149984.2 |
++-----------+---------------+
+1 row in set (0.0141 sec)
+ MySQL  localhost:3307 ssl  northwind  SQL > SELECT od.ProductID, SUM(od.UnitPrice * od.Quantity * (1 - od.Discount)) AS TotalGanancia
+                                          -> FROM OrderDetails od
+                                          -> GROUP BY od.ProductID
+                                          -> ORDER BY TotalGanancia ASC
+                                          -> LIMIT 1;
++-----------+---------------+
+| ProductID | TotalGanancia |
++-----------+---------------+
+|        48 |       1542.75 |
++-----------+---------------+
+1 row in set (0.0033 sec)
+ MySQL  localhost:3307 ssl  northwind  SQL >
