@@ -1,0 +1,122 @@
+EVA2_13_USUARIOS
+
+MySQL Shell 8.0.35
+
+Copyright (c) 2016, 2023, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > \c -mc root@localhost
+WARNING: The -mc option was deprecated, please use --mc instead. (Option has been processed as --mc).
+Creating a Classic session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 18
+Server version: 8.0.35 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > \connect --mc prueba2@localhost
+Creating a Classic session to 'prueba2@localhost'
+Please provide the password for 'prueba2@localhost': ****
+Save password for 'prueba2@localhost'? [Y]es/[N]o/Ne[v]er (default No): n
+Fetching global names for auto-completion... Press ^C to stop.
+Error during auto-completion cache update: Access denied; you need (at least one of) the PROCESS privilege(s) for this operation
+Closing old connection...
+Your MySQL connection id is 19
+Server version: 8.0.35 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| performance_schema |
+| tbd_eva_1          |
++--------------------+
+3 rows in set (0.0010 sec)
+ MySQL  localhost:3306 ssl  SQL > use tbd_eva_1;
+Default schema set to `tbd_eva_1`.
+Fetching global names, object names from `tbd_eva_1` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  tbd_eva_1  SQL > show tables;
++---------------------+
+| Tables_in_tbd_eva_1 |
++---------------------+
+| actor               |
+| ciudad              |
+| cliente             |
+| country             |
+| customer            |
+| customers           |
+| datos               |
+| docente             |
+| employees           |
+| fn1                 |
+| fn3                 |
+| id                  |
+| orders              |
+| persona             |
+| producto            |
+| professor           |
+| prueba              |
+| shirts              |
+| state               |
+| students            |
+| vehiculo            |
++---------------------+
+21 rows in set (0.0015 sec)
+ MySQL  localhost:3306 ssl  tbd_eva_1  SQL > \connect --mc root@localhost
+Creating a Classic session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Closing old connection...
+Your MySQL connection id is 20
+Server version: 8.0.35 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > create user 'prueba3'@'localhost' identified by '1234';
+Query OK, 0 rows affected (0.0393 sec)
+ MySQL  localhost:3306 ssl  SQL > grant all on tbd_eva_1.vehiculo to 'prueba3'@'localhost';
+Query OK, 0 rows affected (0.0106 sec)
+ MySQL  localhost:3306 ssl  SQL > \connect --mc prueba3@localhost
+Creating a Classic session to 'prueba3@localhost'
+Please provide the password for 'prueba3@localhost': ****
+Save password for 'prueba3@localhost'? [Y]es/[N]o/Ne[v]er (default No): n
+Fetching global names for auto-completion... Press ^C to stop.
+Error during auto-completion cache update: Access denied; you need (at least one of) the PROCESS privilege(s) for this operation
+Closing old connection...
+Your MySQL connection id is 21
+Server version: 8.0.35 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| performance_schema |
+| tbd_eva_1          |
++--------------------+
+3 rows in set (0.0010 sec)
+ MySQL  localhost:3306 ssl  SQL > use tbd_eva_1;
+Default schema set to `tbd_eva_1`.
+Fetching global names, object names from `tbd_eva_1` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  tbd_eva_1  SQL > show tables;
++---------------------+
+| Tables_in_tbd_eva_1 |
++---------------------+
+| vehiculo            |
++---------------------+
+1 row in set (0.0015 sec)
+ MySQL  localhost:3306 ssl  tbd_eva_1  SQL > show tables;
++---------------------+
+| Tables_in_tbd_eva_1 |
++---------------------+
+| vehiculo            |
++---------------------+
+1 row in set (0.0014 sec)
+ MySQL  localhost:3306 ssl  tbd_eva_1  SQL > \connect --mc root@localhost
+Creating a Classic session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Closing old connection...
+Your MySQL connection id is 22
+Server version: 8.0.35 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL >
