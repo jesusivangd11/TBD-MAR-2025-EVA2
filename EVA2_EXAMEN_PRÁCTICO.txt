@@ -1,0 +1,330 @@
+EVA2_EXAMEN_PRÁCTICO
+
+MySQL Shell 8.0.41
+
+Copyright (c) 2016, 2025, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > c --mc root@localhost{
+ERROR: Not connected.
+           -> ^C
+ MySQL  SQL > \c --mc root@localhost
+Creating a Classic session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 8
+Server version: 8.0.41 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > show dtabses;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'dtabses' at line 1
+ MySQL  localhost:3306 ssl  SQL > show databses;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'databses' at line 1
+ MySQL  localhost:3306 ssl  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| t3                 |
+| world              |
++--------------------+
+7 rows in set (0.0056 sec)
+ MySQL  localhost:3306 ssl  SQL > use t3;
+Default schema set to `t3`.
+Fetching global names, object names from `t3` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  t3  SQL > create database exa2_tbd;
+Query OK, 1 row affected (0.1424 sec)
+ MySQL  localhost:3306 ssl  t3  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| exa2_tbd           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| t3                 |
+| world              |
++--------------------+
+8 rows in set (0.0013 sec)
+ MySQL  localhost:3306 ssl  t3  SQL > use exa2_tbd;
+Default schema set to `exa2_tbd`.
+Fetching global names, object names from `exa2_tbd` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > create table alumnos(
+                                         -> ID_alumno varchar(10),
+                                         -> ^C
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > create table alumnos(
+                                         -> ID_alumno int key not null auto_incremental,
+                                         -> Nombre varchar(50),
+                                         -> Carrera varchar(20);
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'auto_incremental,
+Nombre varchar(50),
+Carrera varchar(20)' at line 2
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > create table alumnos( ID_alumno int key not null auto_incremental, Nombre varchar(50), Carrera varchar(20));
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'auto_incremental, Nombre varchar(50), Carrera varchar(20))' at line 1
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > create table alumnos( ID_alumno key not null auto_incremental int, Nombre varchar(50), Carrera varchar(20));
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'key not null auto_incremental int, Nombre varchar(50), Carrera varchar(20))' at line 1
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > create table alumnos( ID_alumno int key not null auto_increment, Nombre varchar(50), Carrera varchar(20));
+Query OK, 0 rows affected (2.1179 sec)
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > desc alumnos;
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| ID_alumno | int         | NO   | PRI | NULL    | auto_increment |
+| Nombre    | varchar(50) | YES  |     | NULL    |                |
+| Carrera   | varchar(20) | YES  |     | NULL    |                |
++-----------+-------------+------+-----+---------+----------------+
+3 rows in set (0.0063 sec)
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > drop table alumnos;
+Query OK, 0 rows affected (1.5507 sec)
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > create table alumnos( ID_alumno int key not null auto_increment, Nombre varchar(50) not null, Carrera varchar(20));
+Query OK, 0 rows affected (0.6368 sec)
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > desc alumnos;
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| ID_alumno | int         | NO   | PRI | NULL    | auto_increment |
+| Nombre    | varchar(50) | NO   |     | NULL    |                |
+| Carrera   | varchar(20) | YES  |     | NULL    |                |
++-----------+-------------+------+-----+---------+----------------+
+3 rows in set (0.0039 sec)
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > drop table alumnos;
+Query OK, 0 rows affected (1.4598 sec)
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > create table alumnos( ID_alumno int key auto_increment, Nombre varchar(50) not null, Carrera varchar(20));
+Query OK, 0 rows affected (4.1094 sec)
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > select * from alumnos
+                                         -> ;
+Empty set (0.0057 sec)
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > Desc alumnos;
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| ID_alumno | int         | NO   | PRI | NULL    | auto_increment |
+| Nombre    | varchar(50) | NO   |     | NULL    |                |
+| Carrera   | varchar(20) | YES  |     | NULL    |                |
++-----------+-------------+------+-----+---------+----------------+
+3 rows in set (0.0016 sec)
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > create table Cursos(
+                                         -> ID_curso int key auto_increment,
+                                         -> Nombre_curso varchar(50) not null,
+                                         -> Creditos int);
+Query OK, 0 rows affected (0.0192 sec)
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > create table Inscripciones(
+                                         -> ID_inscripciones int key auto_increment,
+                                         -> ID_alumno int,
+                                         -> ID_curso int,
+                                         -> Fecha_inscripcion date);
+Query OK, 0 rows affected (0.0228 sec)
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > desc cursos;
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| ID_curso     | int         | NO   | PRI | NULL    | auto_increment |
+| Nombre_curso | varchar(50) | NO   |     | NULL    |                |
+| Creditos     | int         | YES  |     | NULL    |                |
++--------------+-------------+------+-----+---------+----------------+
+3 rows in set (0.0031 sec)
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > desc inscricpciones;
+ERROR: 1146 (42S02): Table 'exa2_tbd.inscricpciones' doesn't exist
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > desc inscripciones;
++-------------------+------+------+-----+---------+----------------+
+| Field             | Type | Null | Key | Default | Extra          |
++-------------------+------+------+-----+---------+----------------+
+| ID_inscripciones  | int  | NO   | PRI | NULL    | auto_increment |
+| ID_alumno         | int  | YES  |     | NULL    |                |
+| ID_curso          | int  | YES  |     | NULL    |                |
+| Fecha_inscripcion | date | YES  |     | NULL    |                |
++-------------------+------+------+-----+---------+----------------+
+4 rows in set (0.0031 sec)
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > select * from alumnos references cursos;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'references cursos' at line 1
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > desc alumnos;
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| ID_alumno | int         | NO   | PRI | NULL    | auto_increment |
+| Nombre    | varchar(50) | NO   |     | NULL    |                |
+| Carrera   | varchar(20) | YES  |     | NULL    |                |
++-----------+-------------+------+-----+---------+----------------+
+3 rows in set (0.0014 sec)
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > insert into alumnos(ID_alumno, Nombre, Carrera)
+                                         -> values (1, "Rubén Hernández", "Ingeniería en sistemas"), (2, "Jesús García", "Ingeniería industrial"), (3, "Francisco Gaytán", "Administración de empresas");
+ERROR: 1406 (22001): Data too long for column 'Carrera' at row 1
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > insert into alumnos(ID_alumno, Nombre, Carrera) values (1, "Rubén Hernández", "Sistemas"), (2, "Jesús García", "Ingeniería industrial"), (3, "Francisco Gaytán", "Administración de empresas");
+ERROR: 1406 (22001): Data too long for column 'Carrera' at row 2
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > insert into alumnos(ID_alumno, Nombre, Carrera) values (1, "Rubén Hernández", "Ing. Sistemas"), (2, "Jesús García", "Ing. Industrial"), (3, "Francisco Gaytán", "Contaduría");
+Query OK, 3 rows affected (0.0037 sec)
+
+Records: 3  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > select * from alumnos;
++-----------+------------------+-----------------+
+| ID_alumno | Nombre           | Carrera         |
++-----------+------------------+-----------------+
+|         1 | Rubén Hernández  | Ing. Sistemas   |
+|         2 | Jesús García     | Ing. Industrial |
+|         3 | Francisco Gaytán | Contaduría      |
++-----------+------------------+-----------------+
+3 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > desc cursos;
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| ID_curso     | int         | NO   | PRI | NULL    | auto_increment |
+| Nombre_curso | varchar(50) | NO   |     | NULL    |                |
+| Creditos     | int         | YES  |     | NULL    |                |
++--------------+-------------+------+-----+---------+----------------+
+3 rows in set (0.0023 sec)
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > Insert into cursos (ID_cursos, Nombre_curso, Creditos)
+                                         -> values (1, "Ing. Sistemas"), (2, "Ing. Industrial"), (3, "Contaduría"), (4, "Administración"), (5, "Robótica");
+ERROR: 1054 (42S22): Unknown column 'ID_cursos' in 'field list'
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > Insert into cursos (ID_curso, Nombre_curso, Creditos) values (1, "Ing. Sistemas"), (2, "Ing. Industrial"), (3, "Contaduría"), (4, "Administración"), (5, "Robótica");
+ERROR: 1136 (21S01): Column count doesn't match value count at row 1
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > Insert into cursos (ID_curso, Nombre_curso, Creditos) values (1, "Ing. Sistemas"), (2, "Ing. Industrial"), (3, "Contaduría"), (4, "Administración"), (5, "Robótica");
+ERROR: 1136 (21S01): Column count doesn't match value count at row 1
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > select * from cursos;
+Empty set (0.0006 sec)
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > Insert into cursos (ID_curso, Nombre_curso, Creditos) values (1, "Taller de bases de datos", 5), (2, "Sistemas operativos", 5), (3, "Desarrollo sustentable", 4));
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > Insert into cursos (ID_curso, Nombre_curso, Creditos) values (1, "Taller de bases de datos", 5), (2, "Sistemas operativos", 5), (3, "Desarrollo sustentable", 4);
+Query OK, 3 rows affected (0.0064 sec)
+
+Records: 3  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > select * from cursos;
++----------+--------------------------+----------+
+| ID_curso | Nombre_curso             | Creditos |
++----------+--------------------------+----------+
+|        1 | Taller de bases de datos |        5 |
+|        2 | Sistemas operativos      |        5 |
+|        3 | Desarrollo sustentable   |        4 |
++----------+--------------------------+----------+
+3 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > desc inscripciones;
++-------------------+------+------+-----+---------+----------------+
+| Field             | Type | Null | Key | Default | Extra          |
++-------------------+------+------+-----+---------+----------------+
+| ID_inscripciones  | int  | NO   | PRI | NULL    | auto_increment |
+| ID_alumno         | int  | YES  |     | NULL    |                |
+| ID_curso          | int  | YES  |     | NULL    |                |
+| Fecha_inscripcion | date | YES  |     | NULL    |                |
++-------------------+------+------+-----+---------+----------------+
+4 rows in set (0.0030 sec)
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > Insert into inscripciones (ID_inscripciones, ID_alumno, ID_curso, Fecha_inscripcion) values (6, 120, 2, "2010-01-21"), (32, 890, 3, "2025-01-23");
+Query OK, 2 rows affected (0.0053 sec)
+
+Records: 2  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > Insert into inscripciones (ID_inscripciones, ID_alumno, ID_curso, Fecha_inscripcion) values (7, 123, 1, "2010-01-21"), (17, 721, 2, "2024-08-02");
+Query OK, 2 rows affected (0.0038 sec)
+
+Records: 2  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > Insert into inscripciones (ID_inscripciones, ID_alumno, ID_curso, Fecha_inscripcion) values (20, 211, 1, "2011-01-26");
+Query OK, 1 row affected (0.0028 sec)
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > select * from inscripciones;
++------------------+-----------+----------+-------------------+
+| ID_inscripciones | ID_alumno | ID_curso | Fecha_inscripcion |
++------------------+-----------+----------+-------------------+
+|                6 |       120 |        2 | 2010-01-21        |
+|                7 |       123 |        1 | 2010-01-21        |
+|               17 |       721 |        2 | 2024-08-02        |
+|               20 |       211 |        1 | 2011-01-26        |
+|               32 |       890 |        3 | 2025-01-23        |
++------------------+-----------+----------+-------------------+
+5 rows in set (0.0012 sec)
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > select * from alumnos;
++-----------+------------------+-----------------+
+| ID_alumno | Nombre           | Carrera         |
++-----------+------------------+-----------------+
+|         1 | Rubén Hernández  | Ing. Sistemas   |
+|         2 | Jesús García     | Ing. Industrial |
+|         3 | Francisco Gaytán | Contaduría      |
++-----------+------------------+-----------------+
+3 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > select * from cursos;
++----------+--------------------------+----------+
+| ID_curso | Nombre_curso             | Creditos |
++----------+--------------------------+----------+
+|        1 | Taller de bases de datos |        5 |
+|        2 | Sistemas operativos      |        5 |
+|        3 | Desarrollo sustentable   |        4 |
++----------+--------------------------+----------+
+3 rows in set (0.0005 sec)
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > select a.nombre as alumno, c.nombre_curso as curso, i.fecha_inscripcion
+                                         -> from inscripciones i
+                                         -> join alumnos a on i.id_alumno = a.id_alumno
+                                         -> join cursos c on i.id_curso = c.id_curso^C
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > select a.nombre as alumno, c.nombre_curso as curso, i.fecha_inscripcion
+                                         -> from inscripciones i
+                                         -> join alumnos a on i.id_alumno = a.id_alumno
+                                         -> join cursos c on i.id curso = c.id_curso;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'curso = c.id_curso' at line 4
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > select a.nombre as alumno, c.nombre_curso as curso, i.fecha_inscripcion from inscripciones i join alumnos a on i.id_alumno = a.id_alumno join cursos c on i.id curso = c.curso;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'curso = c.curso' at line 1
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > select a.nombre as alumno, c.nombre_curso as curso, i.fecha_inscripcion from inscripciones i join alumnos a on i.id_alumno = a.id_alumno join cursos c on i.id curso = c.cursos;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'curso = c.cursos' at line 1
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > select a.nombre as alumno, c.nombre_curso as curso, i.fecha_inscripcion from inscripciones i join alumnos a on i.id_alumno = a.id_alumno join cursos c on i.id curso = c.id_cursos;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'curso = c.id_cursos' at line 1
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > select a.nombre as alumno, c.nombre_curso as curso, i.fecha_inscripcion from inscripciones i join alumnos a on i.id_alumno = a.id_alumno join cursos c on i.id curso = c.id_curso;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'curso = c.id_curso' at line 1
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > select * from alumnos references cursos;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'references cursos' at line 1
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > select * from alumnos
+                                         -> join cursos on alumnos.curso_id = cursos.id;
+ERROR: 1054 (42S22): Unknown column 'alumnos.curso_id' in 'on clause'
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > select a.nombre as Nombre_alumno,
+                                         -> c.Nombre_curso as nombre_curso,
+                                         -> i.fecha_inscripcion as Fecha_inscripcion
+                                         -> from alumnos a
+                                         -> join inscripciones i on a.ID_alumno
+                                         -> join cursos c on i.ID_curso = c.ID_curso;
++------------------+--------------------------+-------------------+
+| Nombre_alumno    | nombre_curso             | Fecha_inscripcion |
++------------------+--------------------------+-------------------+
+| Francisco Gaytán | Sistemas operativos      | 2010-01-21        |
+| Jesús García     | Sistemas operativos      | 2010-01-21        |
+| Rubén Hernández  | Sistemas operativos      | 2010-01-21        |
+| Francisco Gaytán | Taller de bases de datos | 2010-01-21        |
+| Jesús García     | Taller de bases de datos | 2010-01-21        |
+| Rubén Hernández  | Taller de bases de datos | 2010-01-21        |
+| Francisco Gaytán | Sistemas operativos      | 2024-08-02        |
+| Jesús García     | Sistemas operativos      | 2024-08-02        |
+| Rubén Hernández  | Sistemas operativos      | 2024-08-02        |
+| Francisco Gaytán | Taller de bases de datos | 2011-01-26        |
+| Jesús García     | Taller de bases de datos | 2011-01-26        |
+| Rubén Hernández  | Taller de bases de datos | 2011-01-26        |
+| Francisco Gaytán | Desarrollo sustentable   | 2025-01-23        |
+| Jesús García     | Desarrollo sustentable   | 2025-01-23        |
+| Rubén Hernández  | Desarrollo sustentable   | 2025-01-23        |
++------------------+--------------------------+-------------------+
+15 rows in set (0.0014 sec)
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > select c.nombre_curso as Nombre_curso,
+                                         -> a.Nombre as Nombre_alumno
+                                         -> from cursos c
+                                         -> left join inscripciones i on c.ID_curso = i.ID_curso
+                                         -> left join alumnos a on i.ID_alumno = a.ID_alumno;
++--------------------------+---------------+
+| Nombre_curso             | Nombre_alumno |
++--------------------------+---------------+
+| Taller de bases de datos | NULL          |
+| Taller de bases de datos | NULL          |
+| Sistemas operativos      | NULL          |
+| Sistemas operativos      | NULL          |
+| Desarrollo sustentable   | NULL          |
++--------------------------+---------------+
+5 rows in set (0.0009 sec)
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > select a.nombre as Nombre:alumno
+                                         -> from alumnos a
+                                         -> left join inscripciones i on a.ID_alumno
+                                         -> where i.ID_inscripciones is null;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ':alumno
+from alumnos a
+left join inscripciones i on a.ID_alumno
+where i.ID_insc' at line 1
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL > select a.nombre as Nombre:alumno from alumnos a  left join inscripciones i on a.ID_alumno = i.ID_alumno where i.ID_inscripciones is null;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ':alumno from alumnos a  left join inscripciones i on a.ID_alumno = i.ID_alumno w' at line 1
+ MySQL  localhost:3306 ssl  exa2_tbd  SQL >
